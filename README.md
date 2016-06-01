@@ -77,6 +77,8 @@ Once in the vm create env variable for auth token:
 
     export ST2_AUTH_TOKEN=`st2 auth st2admin -p Ch@ngeMe -t`
 
+NOTE: This token expires after 24 hours.You will have to manually enter this command for st2 to work.
+
 You can see the action list via:
 
     st2 action list
