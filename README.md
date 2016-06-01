@@ -21,7 +21,7 @@ You can use any one of the following to deploy stackstorm:
 
 ####Purpose of Installation
 
-1. For experimenting with Stackstorm before deployment
+1. To experiment with Stackstorm before deployment
 2. To develop Packs: https://docs.stackstorm.com/latest/packs.html
 
 ##Install Guide
@@ -52,13 +52,14 @@ You can use any one of the following to deploy stackstorm:
  - **Hardware requirements:**
 
    A bare metal server or your laptop with Vagrant and VirtualBox installed.
+   ***NOTE: Installation using Nested VMs is not recommended***
 
  - **Steps to install:**
 
       - Vagrant Installation:
          - Download and Install: https://www.vagrantup.com/docs/installation/
 
-     - VirtualBox Installation:
+      - VirtualBox Installation:
          - Download and Install: https://www.virtualbox.org/wiki/Downloads
          - Also install Extension Pack for VirtualBox: http://download.virtualbox.org/virtualbox/5.0.20/Oracle_VM_VirtualBox_Extension_Pack-5.0.20-106931.vbox-extpack
 
@@ -68,9 +69,13 @@ To provision the environment run:
 
     vagrant up
 
-There will be some red messages but that is fine.  One the vm is up, connect to it via:
+There will be some red messages but that is fine.  Once the vm is up, connect to it via:
 
-    vagrant ssh st2express
+    vagrant ssh
+
+Once in the vm create env variable for auth token:
+
+    export ST2_AUTH_TOKEN=`st2 auth st2admin -p Ch@ngeMe -t`
 
 You can see the action list via:
 
@@ -80,21 +85,19 @@ The supervisor script to start,stop,restart,reload, and, clean st2 is run like s
 
     st2ctl start|stop|status|restart|reload|clean
 
-### Environment Variables
+####Environment Variables
 Environment variables can be used to enable or disable certain features of the StackStorm deployment.
 
-* WEBUI - Set to 0 to skip ui installation.
-    * DEFAULT: 1
-* ST2VER - The version of St2 to install.
-    * DEFAULT: 0.8.0
 * HOSTNAME - the hostname to give the VM.
-    * DEFAULT: st2express
+    * DEFAULT: st2vagrant
 * BOX - the Vagrant base box
     * DEFAULT: ubuntu/trusty64
+* ST2PASSWORD - Password for the st2
+    * DEFAULT: Ch@ngeMe
 
-#### Usage
+####Usage
 
-`HOSTNAME=st2test ST2VER=0.8.0 WEBUI=0 vagrant up`
+`HOSTNAME=st2test ST2PASSWORD=pass vagrant up`
 
 If the hostname has been specified during `vagrant up` then it either needs to be exported or specified for all future vagrant commands related to that VM.
 
@@ -110,9 +113,19 @@ and destroy:
 
 The alternative is to simply `export HOSTNAME=st2test`
 
-### Logging
+####Logging
 This installation makes use of the syslog logging configuration files for each of the St2 components.  You will find the logs in:
 
-    /var/log/st2
+`/var/log/st2`
 
 All actionrunner processes will be using a combined log under st2actions.log and st2actions.audit.log
+
+####NFS Mount Option for Pack development
+
+In the Vagrantfile we are using following line for enabling ***NFS synced folder*** for Pack development:
+
+`config.vm.synced_folder "path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']`
+
+To use this option you can uncomment the line and change the location of the folder on your host machine. During `vagrant up` it will ask you for your host password.
+
+For details refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
