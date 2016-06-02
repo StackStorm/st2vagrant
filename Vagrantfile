@@ -22,13 +22,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     
     # NFS synced folder for pack development
-    # You can change the location of your local folder "/path/to/folder/on/host".
+    # You can change the location of the host folder "/path/to/folder/on/host".
     # config.vm.synced_folder "/path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
 
     # Configure a private network
-    config.vm.network :private_network, ip: "192.168.0.10"
+    config.vm.network :private_network, ip: "192.168.20.20"
 
     # Start shell provisioning
-    # config.vm.provision :shell, :inline => "sudo apt-get install nfs-common portmap"
     config.vm.provision :shell, :inline => "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password=#{st2passwd}"
 end
