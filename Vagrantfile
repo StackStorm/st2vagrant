@@ -2,7 +2,8 @@
 # vi: set ft=ruby :
 
 hostname   = ENV['HOSTNAME'] ? ENV['HOSTNAME'] : 'st2vagrant'
-box        = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/trusty64'
+box        = ENV['BOX'] ? ENV['BOX'] : 'bento/ubuntu-14.04'
+st2user    = ENV['ST2USER'] ? ENV['ST2USER']: 'st2admin'
 st2passwd  = ENV['ST2PASSWD'] ? ENV['ST2PASSWD'] : 'Ch@ngeMe'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -30,7 +31,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     st2.vm.network :private_network, ip: "192.168.20.20"
 
     # Start shell provisioning
-    st2.vm.provision :shell, :inline => "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password=#{st2passwd}", privileged: false
+    st2.vm.provision "shell" do |s|
+      s.path = "scripts/install_st2.sh"
+      s.args   = "#{st2user} #{st2passwd}"
+      s.privileged = false
+    end
   end
 
 end
