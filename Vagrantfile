@@ -10,17 +10,18 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
+  config.vm.define "st2" do |st2|
     # Box details
     config.vm.box = "#{box}"
     config.vm.hostname = "#{hostname}"
-    
-    # Box Specifications 
+
+    # Box Specifications
     config.vm.provider :virtualbox do |vb|
       vb.name = "#{hostname}"
       vb.memory = 2048
       vb.cpus = 2
     end
-    
+
     # NFS synced folder for pack development
     # You can change the location of your local folder "/path/to/folder/on/host".
     # config.vm.synced_folder "/path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
@@ -31,4 +32,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Start shell provisioning
     # config.vm.provision :shell, :inline => "sudo apt-get install nfs-common portmap"
     config.vm.provision :shell, :inline => "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password=#{st2passwd}"
+  end
+
 end
