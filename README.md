@@ -2,12 +2,23 @@
 
 A [Vagrant](https://www.vagrantup.com/about.html) based installer for StackStorm (st2) automation platform. 
 
+## Table of contents
+
+* [Purpose of st2vagrant](#purpose-of-st2vagrant)
+* [Pre-requisites](#pre-requisites)
+* [Install StackStorm inside VM](#install-stackstorm-inside-the-vm)
+* [Playing with st2](#playing-with-st2)
+* [Custom st2 installation](#custom-st2-installation)
+* [Writing a new pack](#writing-a-new-pack)
+* [NFS mount option for Pack development](#nfs-mount-option-for-pack-development)
+* [Support](#support)
+
 #### Purpose of st2vagrant
 
 1. To experiment with StackStorm before production deployment.
 2. To develop StackStorm Packs - https://docs.stackstorm.com/latest/packs.html.
 
-#### Hardware and OS requirements
+#### Pre-requisites
 
 **Host**
 
@@ -15,19 +26,9 @@ Your laptop/server with Vagrant and VirtualBox installed!
 
    ***NOTE: Installation using Nested VMs is not recommended***
 
-**OS**
- 
-* Ubuntu 14.04 (trusty tahr)
-* CentOS 6.7 / RHEL 6.7
-* CentOS 7.2 / RHEL 7.2
-
-Note that you can use a bare metal server but we recommend using a virtual machine for your own safety. 
-
-
-#### Pre-requisites
 
 If you do not have vagrant and virtualbox installed, follow the steps below. 
-Otherwise, skip to next section. If you are brave enough to use a bare metal box, you can also skip to next section.
+Otherwise, skip to next section.
 
 * [Install Vagrant](https://www.vagrantup.com/docs/installation/)
 
@@ -67,14 +68,23 @@ Environment variables can be used to enable or disable certain features of the S
 
 To evaluate StackStorm on other supported OS flavors, you can use the following options for BOX:
 
-* bento/centos-7.2
-* bento/centos-6.7
+* bento/centos-7.2 for CentOS 7.2
+* bento/centos-6.7 for CentOS 6.7
 
 Example: 
 
 ```BOX="bento/centos-7.2" vagrant up```
 
-#### I am ready to write a new pack!
+**Note that StackStorm installation is based on native packages which are built 
+for following OSes only. If you are using a custom Vagrant image, please make
+sure the OS flavor is one of the following.**
+
+* Ubuntu 14.04 (trusty tahr)
+* CentOS 6.7 / RHEL 6.7
+* CentOS 7.2 / RHEL 7.2
+
+
+#### Writing a new pack
 
 
 To learn about packs and how to work with them, see [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
@@ -93,6 +103,6 @@ To use this option you can uncomment the line and change the location of the fol
 For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 
 
-#### I need help!
+#### Support
 
 Please follow [guidelines](https://docs.stackstorm.com/troubleshooting/ask_for_support.html) for support if none of the [self troubleshooting guides](https://docs.stackstorm.com/troubleshooting/index.html) do not help!
