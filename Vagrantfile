@@ -12,11 +12,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "st2" do |st2|
     # Box details
-    config.vm.box = "#{box}"
-    config.vm.hostname = "#{hostname}"
+    st2.vm.box = "#{box}"
+    st2.vm.hostname = "#{hostname}"
 
     # Box Specifications
-    config.vm.provider :virtualbox do |vb|
+    st2.vm.provider :virtualbox do |vb|
       vb.name = "#{hostname}"
       vb.memory = 2048
       vb.cpus = 2
@@ -27,11 +27,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # config.vm.synced_folder "/path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
 
     # Configure a private network
-    config.vm.network :private_network, ip: "192.168.0.10"
+    st2.vm.network :private_network, ip: "192.168.0.10"
 
     # Start shell provisioning
     # config.vm.provision :shell, :inline => "sudo apt-get install nfs-common portmap"
-    config.vm.provision :shell, :inline => "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password=#{st2passwd}"
+    st2.vm.provision :shell, :inline => "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password=#{st2passwd}"
   end
 
 end
