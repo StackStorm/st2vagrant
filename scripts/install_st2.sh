@@ -5,11 +5,12 @@ RHTEST=`cat /etc/redhat-release 2> /dev/null | sed -e "s~\(.*\)release.*~\1~g"`
 
 if [[ -n "$RHTEST" ]]; then
   echo "*** Detected Distro is ${RHTEST} ***"
-  hash curl 2>/dev/null || { sudo yum install -y curl; }
+  hash curl 2>/dev/null || { sudo yum install -y curl; sudo yum install -y nss; }
+  sudo yum update -y curl nss
   curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=$1 --password=$2
 elif [[ -n "$DEBTEST" ]]; then
   echo "*** Detected Distro is ${DEBTEST} ***"
-  hash curl 2>/dev/null || { sudo apt-get install -y curl; }
+  sudo apt-get install -y curl
   curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=$1 --password=$2
 else
   echo "Unknown Operating System."
