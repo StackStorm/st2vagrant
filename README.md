@@ -1,6 +1,6 @@
 # st2vagrant
 
-A [Vagrant](https://www.vagrantup.com/about.html) based installer for StackStorm automation platform (st2). 
+A [Vagrant](https://www.vagrantup.com/about.html) based installer for StackStorm (st2) automation platform. 
 
 #### Purpose of st2vagrant
 
@@ -27,16 +27,17 @@ Note that you can use a bare metal server but we recommend using a virtual machi
 #### Pre-requisites
 
 If you do not have vagrant and virtualbox installed, follow the steps below. 
-Otherwise, skip to next section.
+Otherwise, skip to next section. If you are brave enough to use a bare metal box, you can also skip to next section.
 
 * [Install Vagrant](https://www.vagrantup.com/docs/installation/)
 
 * [Install Virtualbox and extension pack](https://www.virtualbox.org/wiki/Downloads)
  
  
-#### Install stackstorm inside the VM
+#### Install StackStorm inside the VM
 
  * Clone the st2vagrant repo
+
     ```git clone https://github.com/StackStorm/st2vagrant.git```
 
  * Install st2. (This is simply a vagrant provision step. Usually safe to ignore all red messages.)
@@ -79,7 +80,7 @@ Example:
 To learn about packs and how to work with them, see [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
 
 
-#### NFS Mount Option for Pack development
+#### NFS mount option for Pack development
 
 If you want to develop StackStorm pack on your host server and share the code inside the VM where StackStorm is running, you can use NFS. 
 
