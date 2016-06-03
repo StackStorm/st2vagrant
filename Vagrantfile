@@ -30,8 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     st2.vm.network :private_network, ip: "192.168.0.10"
 
     # Start shell provisioning
-    # config.vm.provision :shell, :inline => "sudo apt-get install nfs-common portmap"
-    st2.vm.provision :shell, :inline => "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password=#{st2passwd}"
+    st2.vm.provision :shell, :inline => "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password=#{st2passwd}", privileged: false
   end
 
 end
