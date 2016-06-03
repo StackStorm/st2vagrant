@@ -1,102 +1,97 @@
-##Introduction
+# st2vagrant
 
-To install StackStorm automation platform using Vagrant. It will get you up and running with a single VM running all St2 components, as well as Mistral.
+A [Vagrant](https://www.vagrantup.com/about.html) based installer for StackStorm automation platform (st2). 
 
-####Hardware and OS requirements
+#### Purpose of st2vagrant
+
+1. To experiment with StackStorm before production deployment.
+2. To develop StackStorm Packs - https://docs.stackstorm.com/latest/packs.html.
+
+#### Hardware and OS requirements
 
 **Host**
 
-Your laptop/server with Vagrant and VirtualBox installed.
+Your laptop/server with Vagrant and VirtualBox installed!
 
-***NOTE: Installation using Nested VMs is not recommended***
+   ***NOTE: Installation using Nested VMs is not recommended***
 
-####Purpose of Installation
+**OS**
+ 
+* Ubuntu 14.04 (trusty tahr)
+* CentOS 6.7 / RHEL 6.7
+* CentOS 7.2 / RHEL 7.2
 
-1. To experiment with Stackstorm before deployment
-2. To develop Packs: https://docs.stackstorm.com/latest/packs.html
+Note that you can use a bare metal server but we recommend using a virtual machine for your own safety. 
 
-####Installation Steps
 
- - **Hardware requirements:**
+#### Pre-requisites
 
-    A bare metal server or your laptop with Vagrant and VirtualBox installed.
-      
-         ***NOTE: Installation using Nested VMs is not recommended***
+If you do not have vagrant and virtualbox installed, follow the steps below. 
+Otherwise, skip to next section.
 
-          - **Steps to install:**
+* [Install Vagrant](https://www.vagrantup.com/docs/installation/)
 
-                - Vagrant Installation:
-                         - Download and Install: https://www.vagrantup.com/docs/installation/
+* [Install Virtualbox and extension pack](https://www.virtualbox.org/wiki/Downloads)
+ 
+ 
+#### Install stackstorm inside the VM
 
-                               - VirtualBox Installation:
-                                        - Download and Install: https://www.virtualbox.org/wiki/Downloads
-                                                 - Also install Extension Pack for VirtualBox: http://download.virtualbox.org/virtualbox/5.0.20/Oracle_VM_VirtualBox_Extension_Pack-5.0.20-106931.vbox-extpack
+ * Clone the st2vagrant repo
+    ```git clone https://github.com/StackStorm/st2vagrant.git```
 
-                                                 *Either `git clone` this repo or create a folder and copy `VagrantFile` in it and follow these steps::*
+ * Install st2. (This is simply a vagrant provision step. Usually safe to ignore all red messages.)
 
-                                                 To provision the environment run:
+     ```vagrant up```
 
-                                                     vagrant up
+ * Play with st2 by connecting to the VM!
 
-                                                     There will be some red messages but that is fine.  Once the vm is up, connect to it via:
+     ```vagrant ssh```
 
-                                                         vagrant ssh
+#### Playing with st2
 
-                                                         In the vm create environment variable for auth token:
+You can see the action list via:
 
-                                                             export ST2_AUTH_TOKEN=`st2 auth st2admin -p Ch@ngeMe -t`
+```st2 action list```
 
-                                                             NOTE: This token expires after 24 hours.You will have to re-enter this command for st2 to work.
+A supervisor script named ```st2ctl``` is available to start, stop, restart, reload and clean st2.
 
-                                                             You can see the action list via:
+#### Custom st2 installation
 
-                                                                 st2 action list
+Environment variables can be used to enable or disable certain features of the StackStorm installation.
 
-                                                                 The supervisor script to start,stop,restart,reload, and, clean st2 is run like so:
+* HOSTNAME - the hostname to give the VM. DEFAULT: st2vagrant
+* BOX - the Vagrant base box to use. DEFAULT: bento/ubuntu-14.04
+* ST2USER - Username for st2. DEFAULT: st2admin
+* ST2PASSWORD - Password for st2. DEFAULT: Ch@ngeMe
 
-                                                                     st2ctl start|stop|status|restart|reload|clean
+To evaluate StackStorm on other supported OS flavors, you can use the following options for BOX:
 
-####Environment Variables for Vagrantfile
-Environment variables can be used to enable or disable certain features of the StackStorm deployment.
+* bento/centos-7.2
+* bento/centos-6.7
 
-* HOSTNAME - the hostname to give the VM.
-    * DEFAULT: st2vagrant
-    * BOX - the Vagrant base box
-        * DEFAULT: ubuntu/trusty64
-        * ST2PASSWORD - Password for the st2
-            * DEFAULT: Ch@ngeMe
+Example: 
 
-            Other options for BOX are:
-              * centos/7
+```BOX="bento/centos-7.2" vagrant up```
 
-              **NOTE:** If you are using box other than mentioned above, the install script might not work because of various OS related nuances. Based on the OS you may have to install/update `cURL` and/or update `nss` and run the cURL command again from the VM.
+#### I am ready to write a new pack!
 
-####Usage
 
-`HOSTNAME=st2test ST2PASSWORD=pass vagrant up`
+To learn about packs and how to work with them, see [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
 
-If the hostname has been specified during `vagrant up` then it either needs to be exported or specified for all future vagrant commands related to that VM.
 
-Example:
-If the following was used to provision the VM:
-`HOSTNAME=st2test vagrant up`
+#### NFS Mount Option for Pack development
 
-then status would need to be run like so:
-`HOSTNAME=st2test vagrant status`
-
-and destroy:
-`HOSTNAME=st2test vagrant destroy`
-
-The alternative is to simply `export HOSTNAME=st2test`
-
-####NFS Mount Option for Pack development
-
-https://docs.stackstorm.com/latest/packs.html
+If you want to develop StackStorm pack on your host server and share the code inside the VM where StackStorm is running, you can use NFS. 
 
 In the Vagrantfile we are using following line for enabling ***NFS synced folder***:
 
-`config.vm.synced_folder "path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']`
+```config.vm.synced_folder "path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']```
 
-To use this option you can uncomment the line and change the location of the folder based on your host machine. During `vagrant up` it will ask you for your host password to sync the folders.
+To use this option you can uncomment the line and change the location of the folder based on your host machine. During ```vagrant up``` it will ask you for your host password to sync the folders.
 
 For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
+
+
+#### I need help!
+
+Please follow [guidelines](https://docs.stackstorm.com/troubleshooting/ask_for_support.html) for support if none of the [self troubleshooting guides](https://docs.stackstorm.com/troubleshooting/index.html) do not help!
