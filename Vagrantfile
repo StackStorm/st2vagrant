@@ -4,7 +4,7 @@
 hostname   = ENV['HOSTNAME'] ? ENV['HOSTNAME'] : 'st2vagrant'
 box        = ENV['BOX'] ? ENV['BOX'] : 'bento/ubuntu-14.04'
 st2user    = ENV['ST2USER'] ? ENV['ST2USER']: 'st2admin'
-st2passwd  = ENV['ST2PASSWD'] ? ENV['ST2PASSWD'] : 'Ch@ngeMe'
+st2passwd  = ENV['ST2PASSWORD'] ? ENV['ST2PASSWORD'] : 'Ch@ngeMe'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
