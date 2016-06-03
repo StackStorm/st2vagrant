@@ -27,7 +27,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # config.vm.synced_folder "/path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
 
     # Configure a private network
-    st2.vm.network :private_network, ip: "192.168.0.10"
+    st2.vm.network :private_network, ip: "192.168.20.20"
 
     # Start shell provisioning
     st2.vm.provision :shell, :inline => "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password=#{st2passwd}", privileged: false
