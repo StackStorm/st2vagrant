@@ -1,63 +1,48 @@
 # st2vagrant
 
-A [Vagrant](https://www.vagrantup.com/about.html) based installer for StackStorm (st2) automation platform. 
+Setup [StackStorm](https://www.stackstorm.com/product) (`st2`) on your laptop with Vagrant and VirtualBox, so you can play with it locally and develop integration and automation [packs](https://docs.stackstorm.com/latest/packs.html).
 
-## Table of contents
-
-* [Purpose of st2vagrant](#purpose-of-st2vagrant)
-* [Pre-requisites](#pre-requisites)
-* [Install StackStorm inside VM](#install-stackstorm-inside-the-vm)
-* [Playing with st2](#playing-with-st2)
-* [Custom st2 installation](#custom-st2-installation)
-* [Writing a new pack](#writing-a-new-pack)
-* [NFS mount option for Pack development](#nfs-mount-option-for-pack-development)
-* [Support](#support)
-
-#### Purpose of st2vagrant
-
-1. To experiment with StackStorm before production deployment.
-2. To develop StackStorm Packs - https://docs.stackstorm.com/latest/packs.html.
-
-#### Pre-requisites
-
-**Host**
-
-Your laptop/server with Vagrant and VirtualBox installed!
-
-   ***NOTE: Installation using Nested VMs is not recommended***
+If you are fluent with [Vagrant](https://www.vagrantup.com/docs/getting-started), you know where to look and what to do. If you are new to Vagrant, just follow alone with step-by-step instructions below.
 
 
-If you do not have vagrant and virtualbox installed, follow the steps below. 
-Otherwise, skip to next section.
+## Pre-requisites
 
-* [Install Vagrant](https://www.vagrantup.com/docs/installation/)
+* Install recent version of [Vagrant](https://www.vagrantup.com/docs/installation/) (v1.8.1 at the time of writing)
 
-* [Install Virtualbox and extension pack](https://www.virtualbox.org/wiki/Downloads)
+* Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (version 5.0 and up), and VirtualBox Extension packs ([follow instructions for Extensioin packs here](https://www.virtualbox.org/manual/ch01.html#intro-installing)).
+
  
- 
-#### Install StackStorm inside the VM
+## Simple install
 
- * Clone the st2vagrant repo
+Clone the st2vagrant repo, and start up Vagrant
 
-    ```git clone https://github.com/StackStorm/st2vagrant.git```
+```bash
+git clone https://github.com/StackStorm/st2vagrant.git
+cd st2vagrant
+vagrant up
+```
 
- * Install st2. (This is simply a vagrant provision step. Usually safe to ignore all red messages.)
+This command will download a vagrant box, create a virtual machine, and start a script to provision the most recent stable version of StackStorm. You will see a lot of text, some of that may be red, but not to worry, it's normal. After a while, you should see a large `ST2 OK`, which means that installation successful and a VM with StackStorm is ready to play. Log in to VM, and fire some st2 commands:
 
-     ```vagrant up```
+```:bash
+vagrant ssh
+st2 --version
+st2 action list
+```
 
- * Play with st2 by connecting to the VM!
+The WebUI is available at https://192.168.20.20. The default st2admin user credentials are in [Vagrantfile](Vagrantfile), usually `st2admin:Ch@ngeMe`.
 
-     ```vagrant ssh```
+You are in business! Go to [QuickStart](https://docs.stackstorm.com/start.html) and follow alone.
 
-#### Playing with st2
+If someone went wrong, jump to "Troubleshooting".
 
-You can see the action list via:
+## Details
 
-```st2 action list```
 
-A supervisor script named ```st2ctl``` is available to start, stop, restart, reload and clean st2.
+#### To install StackStorm manually
+If you want to install StackStorm manually, following instructions and just need Vagrant & VirtualBox to get a Linux VM, simply comment out the `st2.vm.provision "shell"...` section in Vagrant file.
 
-#### Custom st2 installation
+#### Customize st2 installation
 
 Environment variables can be used to enable or disable certain features of the StackStorm installation.
 
@@ -66,8 +51,9 @@ Environment variables can be used to enable or disable certain features of the S
 * ST2USER - Username for st2. DEFAULT: st2admin
 * ST2PASSWORD - Password for st2. DEFAULT: Ch@ngeMe
 
-To evaluate StackStorm on other supported OS flavors, you can use the following options for BOX:
+To evaluate StackStorm on supported OS flavors, consider using the the boxes we use [for testing `st2`](https://github.com/StackStorm/st2-test-ground/blob/master/Vagrantfile) for best results:
 
+* bento/ubuntu-14.04 for Ubuntu 14.04 (default)
 * bento/centos-7.2 for CentOS 7.2
 * bento/centos-6.7 for CentOS 6.7
 
@@ -75,34 +61,64 @@ Example:
 
 ```BOX="bento/centos-7.2" vagrant up```
 
-**Note that StackStorm installation is based on native packages which are built 
-for following OSes only. If you are using a custom Vagrant image, please make
-sure the OS flavor is one of the following.**
+Or use your favorite vagrant box. **Note that StackStorm installs from native Linux packages, which are built for following OSes only. Make make sure the OS flavor of your box is one of the following:**
 
-* Ubuntu 14.04 (trusty tahr)
+* Ubuntu 14.04 (Trusty Tahr)
 * CentOS 6.7 / RHEL 6.7
 * CentOS 7.2 / RHEL 7.2
 
-
 #### Writing a new pack
-
 
 To learn about packs and how to work with them, see [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
 
 
 #### NFS mount option for Pack development
+Playin with StackStorm ranges from creating rules and workflows, 
+to turning your scripts into actions, to writing custom sensors. 
+And all of that Everything involves working with files under `/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via ssh, but with all your favorite tools already set up on your laptop, it's convinient to hack files and work with `git` there on the host.
 
-If you want to develop StackStorm pack on your host server and share the code inside the VM where StackStorm is running, you can use NFS. 
+You can create your pack directories under `st2vagrant/` on your host. Vagrant automatically maps it's host directory to `/vagrant` directory on the VM, where you can symlink files and dirs to desired locations.
 
-In the Vagrantfile we are using following line for enabling ***NFS synced folder***:
+Better yet, create a custom NFS mount to mount a directory on your laptop to `/opt/stackstorm/packs` on the VM. In the Vagrantfile we are using following line for enabling ***NFS synced folder***:
 
 ```config.vm.synced_folder "path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']```
 
-To use this option you can uncomment the line and change the location of the folder based on your host machine. During ```vagrant up``` it will ask you for your host password to sync the folders.
+To use this option, uncomment the line and change the location of `"path/to/folder/on/host"` to an existing directory on your laptop. 
+
+By the time you read this hint, your VM is most likely already up and running. Not to worry: just change the `Vagrantfile` and run `vagrant reload`. This will restart the VM and apply the new config without running the provision part so you won't reinstall st2. Vagrant will ask you for your laptop password to sync the folders.
 
 For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 
 
-#### Support
+## Common problems and solutions
 
-Please follow [guidelines](https://docs.stackstorm.com/troubleshooting/ask_for_support.html) for support if none of the [self troubleshooting guides](https://docs.stackstorm.com/troubleshooting/index.html) do not help!
+#### IP Conflicts
+In the event you receive an error related to IP conflict, Edit the `private_neworks` address in `Vagrantfile`, and adjust the third octet to a non-conflicting value. For example:
+
+```
+    # Configure a private network
+    st2.vm.network :private_network, ip: "192.168.20.20"
+```
+
+
+#### Mounts
+
+Sometimes after editing or adding NFS mounts via config.vm.synced_folder,and firing `vagrant up` or `vagrant reload`, you may see this:
+
+```
+==> st2express: Exporting NFS shared folders...
+NFS is reporting that your exports file is invalid. Vagrant does
+this check before making any changes to the file. Please correct
+the issues below and execute "vagrant reload":
+
+exports:3: path contains non-directory or non-existent components: /Volumes/Repo/st2
+exports:3: path contains non-directory or non-existent components: /Volumes/Repo/st2contrib
+exports:3: path contains non-directory or non-existent components: /Volumes/Repo/st2incubator
+exports:3: no usable directories in export entry
+exports:3: using fallback (marked offline): /Volumes/Repo
+```
+FIX: Remove residuals from `/etc/exports` file on the host machine, and do `vagrant reload` again.
+
+## Support
+
+Please follow [guidelines](https://docs.stackstorm.com/troubleshooting/ask_for_support.html) for support if none of the [self troubleshooting guides](https://docs.stackstorm.com/troubleshooting/index.html) do not help! Ask community on Slack at stackstorm-community.slack.com channel ([register here first](https://stackstorm.com/community-signup)).
