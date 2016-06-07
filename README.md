@@ -2,7 +2,7 @@
 
 Setup [StackStorm](https://www.stackstorm.com/product) (`st2`) on your laptop with Vagrant and VirtualBox, so you can play with it locally and develop integration and automation [packs](https://docs.stackstorm.com/latest/packs.html).
 
-If you are fluent with [Vagrant](https://www.vagrantup.com/docs/getting-started), you know where to look and what to do. If you are new to Vagrant, just follow alone with step-by-step instructions below.
+If you are fluent with [Vagrant](https://www.vagrantup.com/docs/getting-started), you know where to look and what to do. If you are new to Vagrant, just follow along with step-by-step instructions below.
 
 
 ## Pre-requisites
@@ -11,10 +11,10 @@ If you are fluent with [Vagrant](https://www.vagrantup.com/docs/getting-started)
 
 * Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (version 5.0 and up), and VirtualBox Extension packs ([follow instructions for Extension packs here](https://www.virtualbox.org/manual/ch01.html#intro-installing)).
 
- 
+
 ## Simple install
 
-Clone the st2vagrant repo, and start up Vagrant
+Clone the st2vagrant repo, and start up Vagrant:
 
 ```bash
 git clone https://github.com/StackStorm/st2vagrant.git
@@ -24,7 +24,7 @@ vagrant up
 
 This command will download a vagrant box, create a virtual machine, and start a script to provision the most recent stable version of StackStorm. You will see a lot of text, some of that may be red, but not to worry, it's normal. After a while, you should see a large `ST2 OK`, which means that installation successful and a VM with StackStorm is ready to play. Log in to VM, and fire some st2 commands:
 
-```:bash
+```bash
 vagrant ssh
 st2 --version
 st2 action list
@@ -32,32 +32,32 @@ st2 action list
 
 The WebUI is available at https://192.168.20.20. The default st2admin user credentials are in [Vagrantfile](Vagrantfile), usually `st2admin:Ch@ngeMe`.
 
-You are in business! Go to [QuickStart](https://docs.stackstorm.com/start.html) and follow alone.
+You are in business! Go to [QuickStart](https://docs.stackstorm.com/start.html) and follow along.
 
-If someone went wrong, jump to "Troubleshooting".
+If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm/st2vagrant#common-problems-and-solutions) section below.
 
 ## Details
 
 
 #### To install StackStorm manually
-If you want to install StackStorm manually, following instructions and just need Vagrant & VirtualBox to get a Linux VM, simply comment out the `st2.vm.provision "shell"...` section in Vagrant file.
+If you want to install StackStorm manually, follow the instructions to install Vagrant & VirtualBox to get a Linux VM, simply comment out the `st2.vm.provision "shell"...` section in your `Vagrantfile`.
 
 #### Customize st2 installation
 
-Environment variables can be used to enable or disable certain features of the StackStorm installation.
+Environment variables can be used to enable or disable certain features of the StackStorm installation:
 
 * HOSTNAME - the hostname to give the VM. DEFAULT: st2vagrant
 * BOX - the Vagrant base box to use. DEFAULT: bento/ubuntu-14.04
 * ST2USER - Username for st2. DEFAULT: st2admin
 * ST2PASSWORD - Password for st2. DEFAULT: Ch@ngeMe
 
-To evaluate StackStorm on supported OS flavors, consider using the the boxes we use [for testing `st2`](https://github.com/StackStorm/st2-test-ground/blob/master/Vagrantfile) for best results:
+To evaluate StackStorm on supported OS flavors, consider using the boxes we use [for testing `st2`](https://github.com/StackStorm/st2-test-ground/blob/master/Vagrantfile) for best results:
 
 * bento/ubuntu-14.04 for Ubuntu 14.04 (default)
 * bento/centos-7.2 for CentOS 7.2
 * bento/centos-6.7 for CentOS 6.7
 
-Example: 
+Example:
 
 ```BOX="bento/centos-7.2" vagrant up```
 
@@ -73,9 +73,9 @@ To learn about packs and how to work with them, see [StackStorm documentation on
 
 
 #### NFS mount option for Pack development
-Playin with StackStorm ranges from creating rules and workflows, 
-to turning your scripts into actions, to writing custom sensors. 
-And all of that Everything involves working with files under `/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via ssh, but with all your favorite tools already set up on your laptop, it's convenient to hack files and work with `git` there on the host.
+
+Playing with StackStorm ranges from creating rules and workflows, to turning your scripts into actions, to writing custom sensors.
+And all of that involves working with files under `/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via ssh, but with all your favorite tools already set up on your laptop, it's convenient to hack files and work with `git` there on the host.
 
 You can create your pack directories under `st2vagrant/` on your host. Vagrant automatically maps it's host directory to `/vagrant` directory on the VM, where you can symlink files and dirs to desired locations.
 
@@ -83,9 +83,9 @@ Better yet, create a custom NFS mount to mount a directory on your laptop to `/o
 
 ```config.vm.synced_folder "path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']```
 
-To use this option, uncomment the line and change the location of `"path/to/folder/on/host"` to an existing directory on your laptop. 
+To use this option, uncomment the line and change the location of `"path/to/folder/on/host"` to an existing directory on your laptop.
 
-By the time you read this hint, your VM is most likely already up and running. Not to worry: just change the `Vagrantfile` and run `vagrant reload`. This will restart the VM and apply the new config without running the provision part so you won't reinstall st2. Vagrant will ask you for your laptop password to sync the folders.
+By the time you read this hint, your VM is most likely already up and running. Not to worry: just uncomment the above mentioned line in your `Vagrantfile` and run `vagrant reload`. This will restart the VM and apply the new config without running the provision part, so you won't reinstall st2. Vagrant will however ask you for your laptop password to sync the folders.
 
 For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 
@@ -103,7 +103,7 @@ In the event you receive an error related to IP conflict, Edit the `private_newo
 
 #### Mounts
 
-Sometimes after editing or adding NFS mounts via config.vm.synced_folder,and firing `vagrant up` or `vagrant reload`, you may see this:
+Sometimes after editing or adding NFS mounts via `config.vm.synced_folder`,and firing `vagrant up` or `vagrant reload`, you may see this:
 
 ```
 ==> st2express: Exporting NFS shared folders...
