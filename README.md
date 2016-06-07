@@ -9,7 +9,7 @@ If you are fluent with [Vagrant](https://www.vagrantup.com/docs/getting-started)
 
 * Install recent version of [Vagrant](https://www.vagrantup.com/docs/installation/) (v1.8.1 at the time of writing)
 
-* Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (version 5.0 and up), and VirtualBox Extension packs ([follow instructions for Extensioin packs here](https://www.virtualbox.org/manual/ch01.html#intro-installing)).
+* Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (version 5.0 and up), and VirtualBox Extension packs ([follow instructions for Extension packs here](https://www.virtualbox.org/manual/ch01.html#intro-installing)).
 
  
 ## Simple install
@@ -75,7 +75,7 @@ To learn about packs and how to work with them, see [StackStorm documentation on
 #### NFS mount option for Pack development
 Playin with StackStorm ranges from creating rules and workflows, 
 to turning your scripts into actions, to writing custom sensors. 
-And all of that Everything involves working with files under `/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via ssh, but with all your favorite tools already set up on your laptop, it's convinient to hack files and work with `git` there on the host.
+And all of that Everything involves working with files under `/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via ssh, but with all your favorite tools already set up on your laptop, it's convenient to hack files and work with `git` there on the host.
 
 You can create your pack directories under `st2vagrant/` on your host. Vagrant automatically maps it's host directory to `/vagrant` directory on the VM, where you can symlink files and dirs to desired locations.
 
