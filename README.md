@@ -30,7 +30,7 @@ st2 --version
 st2 action list
 ```
 
-The WebUI is available at https://192.168.20.20. The default st2admin user credentials are in [Vagrantfile](Vagrantfile), usually `st2admin:Ch@ngeMe`.
+The WebUI is available at https://192.168.16.20. The default st2admin user credentials are in [Vagrantfile](Vagrantfile), usually `st2admin:Ch@ngeMe`.
 
 You are in business! Go to [QuickStart](https://docs.stackstorm.com/start.html) and follow along.
 
@@ -97,7 +97,7 @@ In the event you receive an error related to IP conflict, Edit the `private_newo
 
 ```
     # Configure a private network
-    st2.vm.network :private_network, ip: "192.168.20.20"
+    st2.vm.network :private_network, ip: "192.168.16.20"
 ```
 
 
