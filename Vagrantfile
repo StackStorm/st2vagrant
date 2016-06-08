@@ -11,7 +11,6 @@ st2passwd  = ENV['ST2PASSWORD'] ? ENV['ST2PASSWORD'] : 'Ch@ngeMe'
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
   config.vm.define "st2" do |st2|
     # Box details
     st2.vm.box = "#{box}"
@@ -26,7 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # NFS-synced directory for pack development
     # Change "/path/to/directory/on/host" to point to existing directory on your laptop/host and uncomment:
-    # config.vm.synced_directory "/path/to/directory/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
+    # config.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
 
     # Configure a private network
     st2.vm.network :private_network, ip: "192.168.16.20"
