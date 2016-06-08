@@ -46,16 +46,27 @@ The WebUI is available at https://192.168.16.20. The default st2admin user crede
 
 You are in business! Go to [QuickStart](https://docs.stackstorm.com/start.html) and follow along.
 
+To configure ChatOps, review and edit `/opt/stackstorm/chatops/st2chatops.env` configuration file
+to point to Chat Service you are using. See details in "Setup ChatOps" section in installation
+docs for your OS (e.g, [here is one for Ubuntu](https://docs.stackstorm.com/install/rhel7.html#setup-chatops)).
+
+The Enterprise bits are not yet installed; to add them and get Flow, RBAC, and LDAP,
+[follow instructions]to obtain a license key and
+install StackStorm Enterprise](https://docs.stackstorm.com/install/enterprise.html)
+
 If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm/st2vagrant#common-problems-and-solutions) section below.
 
+
+## Manual installation
+
+To master StackStorm and understand how things are wired together, we strongly encourage you to
+[eventually] install StackStorm manually, following installation instructions. You can still
+benefit from this Vagrantfile to get the Linux VM up and running: follow instructions to
+install Vagrant & VirtualBox to get a Linux VM, and simply comment out the
+`st2.vm.provision "shell"...` section in your `Vagrantfile` before running `vagrant up`.
+
+
 ## Customize your st2 installation
-
-
-#### To install StackStorm manually
-
-If you want to install StackStorm manually, follow the
-instructions to install Vagrant & VirtualBox to get a Linux VM, simply comment out the
-`st2.vm.provision "shell"...` section in your `Vagrantfile`.
 
 Environment variables can be used to enable or disable certain features of the StackStorm installation:
 
@@ -89,6 +100,7 @@ following:**
 * Ubuntu 14.04 (Trusty Tahr)
 * CentOS 6.7 / RHEL 6.7
 * CentOS 7.2 / RHEL 7.2
+
 
 #### Writing a new pack
 
