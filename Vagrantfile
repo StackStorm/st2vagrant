@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+release    = ENV['RELEASE'] ? ENV['RELEASE'] : 'stable'
 hostname   = ENV['HOSTNAME'] ? ENV['HOSTNAME'] : 'st2vagrant'
 box        = ENV['BOX'] ? ENV['BOX'] : 'bento/ubuntu-14.04'
 st2user    = ENV['ST2USER'] ? ENV['ST2USER']: 'st2admin'
@@ -37,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Start shell provisioning.
     st2.vm.provision "shell" do |s|
       s.path = "scripts/install_st2.sh"
-      s.args   = "#{st2user} #{st2passwd}"
+      s.args   = "#{st2user} #{st2passwd} #{release}"
       s.privileged = false
     end
   end

@@ -19,7 +19,7 @@ VirtualBox Extension packs ([follow instructions for Extension packs
 here](https://www.virtualbox.org/manual/ch01.html#intro-installing)).
 
 
-## Simple install
+## Simple installation
 
 Clone the st2vagrant repo, and start up Vagrant:
 
@@ -48,21 +48,27 @@ You are in business! Go to [QuickStart](https://docs.stackstorm.com/start.html) 
 
 If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm/st2vagrant#common-problems-and-solutions) section below.
 
-## Details
+## Customize your st2 installation
 
 
-#### To install StackStorm manually If you want to install StackStorm manually, follow the
+#### To install StackStorm manually
+
+If you want to install StackStorm manually, follow the
 instructions to install Vagrant & VirtualBox to get a Linux VM, simply comment out the
 `st2.vm.provision "shell"...` section in your `Vagrantfile`.
 
-#### Customize st2 installation
-
 Environment variables can be used to enable or disable certain features of the StackStorm installation:
 
-* HOSTNAME - the hostname to give the VM. DEFAULT: st2vagrant
-* BOX - the Vagrant base box to use. DEFAULT: bento/ubuntu-14.04
-* ST2USER - Username for st2. DEFAULT: st2admin
-* ST2PASSWORD - Password for st2. DEFAULT: Ch@ngeMe
+* `RELEASE` - `stable` for the latest stable release, or `unstable` for a current version from dev trunk. DEFAULT: `stable`
+* `HOSTNAME` - the hostname to give the VM. DEFAULT: `st2vagrant`
+* `BOX` - the Vagrant base box to use. DEFAULT: `bento/ubuntu-14.04`
+* `ST2USER` - Username for st2. DEFAULT: st2admin
+* `ST2PASSWORD` - Password for st2. DEFAULT: `Ch@ngeMe`
+
+Set the variables by pre-pending them to `vagrant up` command. In the example below, it will install
+a version of st2 from development trunc, and set password to `secret`:
+
+```RELEASE="unstable" ST2PASSWORD="secret" vagrant up```
 
 To evaluate StackStorm on supported OS flavors, consider using the boxes we use
 [for testing `st2`](https://github.com/StackStorm/st2-test-ground/blob/master/Vagrantfile)
@@ -119,6 +125,7 @@ For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 ## Common problems and solutions
 
 #### IP Conflicts
+
 In the event you receive an error related to IP conflict, Edit the `private_neworks` address in `Vagrantfile`, and adjust the third octet to a non-conflicting value. For example:
 
 ```
