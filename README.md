@@ -112,7 +112,8 @@ To use this option, uncomment the line and change the location of `"path/to/fold
 existing directory on your laptop.
 
 By the time you read this hint, your VM is most likely already up and running. Not to worry: just
-uncomment the above mentioned line in your `Vagrantfile` and run `vagrant reload`. This will restart
+uncomment the above mentioned line in your `Vagrantfile` and run `vagrant reload --no-provision`.
+This will restart
 the VM and apply the new config without running the provision part, so you won't reinstall st2.
 Vagrant will however ask you for your laptop password to sync the folders.
 
