@@ -6,7 +6,7 @@ if [[ $# > 2 ]]; then
   then
     RELEASE_FLAG="--$3"
   else
-    echo -e "Use 'stable' for recent stable release, or 'unstalbe' to live on the edge."
+    echo -e "Use 'stable' for recent stable release, or 'unstable' to live on the edge."
     exit 2
   fi
 fi

@@ -57,15 +57,6 @@ install StackStorm Enterprise](https://docs.stackstorm.com/install/enterprise.ht
 If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm/st2vagrant#common-problems-and-solutions) section below.
 
 
-## Manual installation
-
-To master StackStorm and understand how things are wired together, we strongly encourage you to
-[eventually] install StackStorm manually, following installation instructions. You can still
-benefit from this Vagrantfile to get the Linux VM up and running: follow instructions to
-install Vagrant & VirtualBox to get a Linux VM, and simply comment out the
-`st2.vm.provision "shell"...` section in your `Vagrantfile` before running `vagrant up`.
-
-
 ## Customize your st2 installation
 
 Environment variables can be used to enable or disable certain features of the StackStorm installation:
@@ -101,12 +92,6 @@ following:**
 * CentOS 6.7 / RHEL 6.7
 * CentOS 7.2 / RHEL 7.2
 
-
-#### Writing a new pack
-
-To learn about packs and how to work with them, see [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
-
-
 #### NFS mount option for Pack development
 
 Playing with StackStorm ranges from creating rules and workflows, to turning your scripts into
@@ -127,12 +112,23 @@ To use this option, uncomment the line and change the location of `"path/to/fold
 existing directory on your laptop.
 
 By the time you read this hint, your VM is most likely already up and running. Not to worry: just
-uncomment the above mentioned line in your `Vagrantfile` and run `vagrant reload --no-provision`. This will restart
+uncomment the above mentioned line in your `Vagrantfile` and run `vagrant reload`. This will restart
 the VM and apply the new config without running the provision part, so you won't reinstall st2.
 Vagrant will however ask you for your laptop password to sync the folders.
 
 For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 
+To learn about packs and how to work with them, see
+[StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
+
+## Manual installation
+
+To master StackStorm and understand how things are wired together, we strongly encourage you to
+[eventually] install StackStorm manually, following
+[installation instructions](https://docs.stackstorm.com/install/). You can still
+benefit from this Vagrantfile to get the Linux VM up and running: follow instructions to
+install Vagrant & VirtualBox to get a Linux VM, and simply comment out the
+`st2.vm.provision "shell"...` section in your `Vagrantfile` before running `vagrant up`.
 
 ## Common problems and solutions
 
