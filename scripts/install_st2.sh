@@ -20,6 +20,7 @@ if [[ -n "$RHTEST" ]]; then
   sudo yum update -y curl nss
 elif [[ -n "$DEBTEST" ]]; then
   echo "*** Detected Distro is ${DEBTEST} ***"
+  sudo apt-get update
   sudo apt-get install -y curl
 else
   echo "Unknown Operating System."
