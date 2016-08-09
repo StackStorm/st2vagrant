@@ -10,6 +10,7 @@ below.
 
 
 ## Pre-requisites
+* [Install git](https://git-scm.com/downloads), dah :) if you're on Windows you may not have it.
 
 * Install recent version of [Vagrant](https://www.vagrantup.com/docs/installation/)
 (v1.8.1 at the time of writing)
