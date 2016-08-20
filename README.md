@@ -10,10 +10,10 @@ below.
 
 
 ## Pre-requisites
-* [Install git](https://git-scm.com/downloads), dah :) if you're on Windows you may not have it.
+* [Install git](https://git-scm.com/downloads), dah :) You may not have it if you're on Windows.
 
 * Install recent version of [Vagrant](https://www.vagrantup.com/docs/installation/)
-(v1.8.1 at the time of writing)
+(v1.8.1 at the time of writing). For those unfortunate Windows users: [How to use Vagrant on Windows](http://tech.osteel.me/posts/2015/01/25/how-to-use-vagrant-on-windows.html) may sweeten your bitter.
 
 * Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (version 5.0 and up), and
 VirtualBox Extension packs ([follow instructions for Extension packs
