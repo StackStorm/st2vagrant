@@ -37,10 +37,12 @@ RHMAJVER=`cat /etc/redhat-release | sed 's/[^0-9.]*\([0-9.]\).*/\1/'`
 echo "*** Let's install some dev tools ***"
 
 if [[ -n "$RHTEST" ]]; then
-  if [[ "$RHMAJVER" != '6' ]]; then
+  if [[ "$RHMAJVER" == '6' ]]; then
     sudo yum install -y centos-release-SCL
     sudo yum install -y python27
-  elif [[ "$RHMAJVER" != '7' ]]; then
+    sudo unlink /usr/bin/python
+    sudo ln -s /opt/rh/python27/root/usr/bin/python /usr/bin/python
+  elif [[ "$RHMAJVER" == '7' ]]; then
     sudo yum install -y python
   fi
   sudo yum install -y python-pip git
