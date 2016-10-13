@@ -40,8 +40,10 @@ if [[ -n "$RHTEST" ]]; then
   if [[ "$RHMAJVER" == '6' ]]; then
     sudo yum install -y centos-release-SCL
     sudo yum install -y python27
-    sudo unlink /usr/bin/python
-    sudo ln -s /opt/rh/python27/root/usr/bin/python /usr/bin/python
+    echo "LD_LIBRARY_PATH=/opt/rh/python27/root/usr/lib64:$LD_LIBRARY_PATH" | sudo tee -a /etc/environment
+    sudo ln -s /opt/rh/python27/root/usr/bin/python /usr/local/bin/python
+    sudo ln -s /opt/rh/python27/root/usr/bin/pip /usr/local/bin/pip
+    source /etc/environment
   elif [[ "$RHMAJVER" == '7' ]]; then
     sudo yum install -y python
   fi
