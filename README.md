@@ -64,7 +64,7 @@ Environment variables can be used to enable or disable certain features of the S
 
 * `RELEASE` - `stable` for the latest stable release, or `unstable` for a current version from dev trunk. DEFAULT: `stable`
 * `HOSTNAME` - the hostname to give the VM. DEFAULT: `st2vagrant`
-* `BOX` - the Vagrant base box to use. DEFAULT: `bento/ubuntu-14.04`
+* `BOX` - the Vagrant base box to use. DEFAULT: `ubuntu/trusty64`
 * `ST2USER` - Username for st2. DEFAULT: st2admin
 * `ST2PASSWORD` - Password for st2. DEFAULT: `Ch@ngeMe`
 
@@ -77,7 +77,7 @@ To evaluate StackStorm on supported OS flavors, consider using the boxes we use
 [for testing `st2`](https://github.com/StackStorm/st2-test-ground/blob/master/Vagrantfile)
 for best results:
 
-* bento/ubuntu-14.04 for Ubuntu 14.04 (default)
+* ubuntu/trusty64 for Ubuntu 14.04 (default)
 * bento/centos-7.2 for CentOS 7.2
 * bento/centos-6.7 for CentOS 6.7
 
