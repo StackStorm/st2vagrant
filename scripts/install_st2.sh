@@ -11,6 +11,8 @@ if [[ $# > 2 ]]; then
   fi
 fi
 
+echo "*** Let's install some net tools ***"
+
 DEBTEST=`lsb_release -a 2> /dev/null | grep Distributor | awk '{print $3}'`
 RHTEST=`cat /etc/redhat-release 2> /dev/null | sed -e "s~\(.*\)release.*~\1~g"`
 
@@ -27,10 +29,6 @@ else
   echo "See list of supported OSes: https://github.com/StackStorm/st2vagrant/blob/master/README.md."
   exit 2
 fi
-
-echo "*** Let's install StackStorm  ***"
-
-curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=$1 --password=$2 $RELEASE_FLAG
 
 RHMAJVER=`cat /etc/redhat-release | sed 's/[^0-9.]*\([0-9.]\).*/\1/'`
 
@@ -55,3 +53,7 @@ fi
 echo "*** Let's install some python tools ***"
 sudo -H pip install --upgrade pip
 sudo -H pip install virtualenv
+
+echo "*** Let's install StackStorm  ***"
+
+curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=$1 --password=$2 $RELEASE_FLAG
