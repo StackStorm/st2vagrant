@@ -3,7 +3,7 @@
 
 release    = ENV['RELEASE'] ? ENV['RELEASE'] : 'stable'
 hostname   = ENV['HOSTNAME'] ? ENV['HOSTNAME'] : 'st2vagrant'
-box        = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/trusty64'
+box        = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/xenial64'
 st2user    = ENV['ST2USER'] ? ENV['ST2USER']: 'st2admin'
 st2passwd  = ENV['ST2PASSWORD'] ? ENV['ST2PASSWORD'] : 'Ch@ngeMe'
 
