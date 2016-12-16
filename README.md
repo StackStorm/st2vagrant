@@ -51,9 +51,9 @@ To configure ChatOps, review and edit `/opt/stackstorm/chatops/st2chatops.env` c
 to point to Chat Service you are using. See details in "Setup ChatOps" section in installation
 docs for your OS (e.g, [here is one for Ubuntu](https://docs.stackstorm.com/install/rhel7.html#setup-chatops)).
 
-The Enterprise bits are not yet installed; to add them and get Workflow Designer, RBAC, and LDAP,
+The Brocade Workflow Composer bits are not yet installed; to add them and get Workflow Designer, RBAC, and LDAP,
 follow these [instructions to obtain a license key and
-install StackStorm Enterprise](https://docs.stackstorm.com/install/enterprise.html)
+install BWC](https://docs.stackstorm.com/install/bwc.html).
 
 If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm/st2vagrant#common-problems-and-solutions) section below.
 
