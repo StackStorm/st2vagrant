@@ -13,7 +13,7 @@ below.
 * [Install git](https://git-scm.com/downloads) (duh!). You may not have it if you're on Windows.
 
 * Install recent version of [Vagrant](https://www.vagrantup.com/docs/installation/)
-(v1.8.1 at the time of writing). For those unfortunate Windows users: [How to use Vagrant on Windows](http://tech.osteel.me/posts/2015/01/25/how-to-use-vagrant-on-windows.html) may sweeten your bitter.
+(v1.8.1 at the time of writing). For those unfortunate Windows users: [How to use Vagrant on Windows](http://tech.osteel.me/posts/2015/01/25/how-to-use-vagrant-on-windows.html) may help.
 
 * Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (version 5.0 and up), and
 VirtualBox Extension packs ([follow instructions for Extension packs
@@ -51,9 +51,9 @@ To configure ChatOps, review and edit `/opt/stackstorm/chatops/st2chatops.env` c
 to point to Chat Service you are using. See details in "Setup ChatOps" section in installation
 docs for your OS (e.g, [here is one for Ubuntu](https://docs.stackstorm.com/install/rhel7.html#setup-chatops)).
 
-The Enterprise bits are not yet installed; to add them and get Flow, RBAC, and LDAP,
-[follow instructions]to obtain a license key and
-install StackStorm Enterprise](https://docs.stackstorm.com/install/enterprise.html)
+The Brocade Workflow Composer bits are not yet installed; to add them and get Workflow Designer, RBAC, and LDAP,
+follow these [instructions to obtain a license key and
+install BWC](https://docs.stackstorm.com/install/bwc.html).
 
 If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm/st2vagrant#common-problems-and-solutions) section below.
 
