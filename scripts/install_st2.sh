@@ -2,9 +2,10 @@
 
 # Select between recent stable (e.g. 1.4) or recent unstable (e.g. 1.5dev)
 if [[ $# > 2 ]]; then
-  if [[ $3 == "stable" ]] || [[ $3 == "unstable" ]]
-  then
+  if [[ $3 == "stable" ]]; then
     RELEASE_FLAG="--$3"
+  elif [[ $3 == "unstable" ]]; then
+    RELEASE_FLAG="--$3 --staging"
   else
     echo -e "Use 'stable' for recent stable release, or 'unstable' to live on the edge."
     exit 2
