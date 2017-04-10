@@ -63,6 +63,7 @@ If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm
 Environment variables can be used to enable or disable certain features of the StackStorm installation:
 
 * `RELEASE` - `stable` for the latest stable release, or `unstable` for a current version from dev trunk. DEFAULT: `stable`
+* `REPO_TYPE` - `` for latest stable release, or `staging` for a current version of dev trunk. DEFAULT: ``
 * `HOSTNAME` - the hostname to give the VM. DEFAULT: `st2vagrant`
 * `BOX` - the Vagrant base box to use. DEFAULT: `ubuntu/xenial64`
 * `ST2USER` - Username for st2. DEFAULT: st2admin
@@ -71,7 +72,7 @@ Environment variables can be used to enable or disable certain features of the S
 Set the variables by pre-pending them to `vagrant up` command. In the example below, it will install
 a version of st2 from development trunc, and set password to `secret`:
 
-```RELEASE="unstable" ST2PASSWORD="secret" vagrant up```
+```RELEASE="unstable" REPO_TYPE="staging" ST2PASSWORD="secret" vagrant up```
 
 To evaluate StackStorm on supported OS flavors, consider using the boxes we use
 [for testing `st2`](https://github.com/StackStorm/st2-test-ground/blob/master/Vagrantfile)
