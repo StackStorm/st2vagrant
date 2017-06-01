@@ -1,19 +1,35 @@
 #!/bin/bash
 
-# Select between recent stable (e.g. 1.4) or recent unstable (e.g. 1.5dev)
-if [[ $# > 2 ]]; then
-  if [[ $3 == "stable" ]] || [[ $3 == "unstable" ]]
-  then
-    RELEASE_FLAG="--$3"
-  else
-    echo -e "Use 'stable' for recent stable release, or 'unstable' to live on the edge."
-    exit 2
-  fi
+set -e
+
+while getopts "u:p:r:t:k:" option
+do
+  case "${option}"
+  in
+  u) ST2_USER=${OPTARG};;
+  p) ST2_PASSWORD=${OPTARG};;
+  r) RELEASE=${OPTARG};;
+  t) REPO_TYPE=${OPTARG};;
+  k) LICENSE_KEY=${OPTARG};;
+  esac
+done
+
+if [[ $RELEASE == "stable" ]] || [[ $RELEASE == "unstable" ]]
+then
+  RELEASE="--${RELEASE}"
+else
+  echo -e "Use 'stable' for recent stable release, or 'unstable' to live on the edge."
+  exit 2
+fi
+
+if [[ $REPO_TYPE == 'staging' ]]
+then
+  REPO_TYPE="--staging"
 fi
 
 echo "*** Let's install some net tools ***"
 
-DEBTEST=`lsb_release -a 2> /dev/null | grep Distributor | awk '{print $3}'`
+DEBTEST=`lsb_release -a 2> /dev/null | grep Distributor | awk '{print $RELEASE}'`
 RHTEST=`cat /etc/redhat-release 2> /dev/null | sed -e "s~\(.*\)release.*~\1~g"`
 
 if [[ -n "$RHTEST" ]]; then
@@ -56,4 +72,10 @@ sudo -H pip install virtualenv
 
 echo "*** Let's install StackStorm  ***"
 
-curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=$1 --password=$2 $RELEASE_FLAG
+if [[ -z "${LICENSE_KEY}" ]]; then
+  echo "Installing ST2 community version"
+  curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=${ST2_USER} --password=${ST2_PASSWORD} ${RELEASE} ${REPO_TYPE}
+else
+  echo "Installing ST2 enterprise ${RELEASE} ${REPO_TYPE} with license key: ${LICENSE_KEY}"
+  curl -sSL -O https://brocade.com/bwc/install/install.sh && chmod +x install.sh && ./install.sh --user=${ST2_USER}  --password=${ST2_PASSWORD} --license=${LICENSE_KEY} ${RELEASE} ${REPO_TYPE}
+fi
