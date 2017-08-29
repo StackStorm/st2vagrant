@@ -41,11 +41,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
      st2.vm.network "public_network", ip: "192.168.33.1", bridge: 'en7: Apple USB Ethernet Adapter', :netmask => "255.255.255.0"
 
     # Start shell provisioning.
-    # st2.vm.provision "shell" do |s|
-    #  s.path = "scripts/install_st2.sh"
-    #  s.args   = "#{st2user} #{st2passwd} #{release}"
-    #  s.privileged = false
-    # end
+    st2.vm.provision "shell" do |s|
+     s.path = "scripts/install_st2.sh"
+     s.args   = "#{st2user} #{st2passwd} #{release}"
+     s.privileged = false
+    end
   end
 
 end
