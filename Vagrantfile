@@ -21,6 +21,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.name = "#{hostname}"
       vb.memory = 2048
       vb.cpus = 2
+      # Use this line to get DNS from host to resolve a common
+      # issue with VirtualBox https://www.vagrantup.com/docs/virtualbox/common-issues.html#dns-not-working
+      vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     end
 
     # NFS-synced directory for pack development
@@ -33,12 +36,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Public (bridged) network may come handy for external access to VM (e.g. sensor development)
     # See https://www.vagrantup.com/docs/networking/public_network.html
     # st2.vm.network "public_network", bridge: 'en0: Wi-Fi (AirPort)'
+    #
+    # Setting up bridge to talk to R-Pi.
+     st2.vm.network "public_network", ip: "192.168.33.1", bridge: 'en7: Apple USB Ethernet Adapter', :netmask => "255.255.255.0"
 
     # Start shell provisioning.
     st2.vm.provision "shell" do |s|
-      s.path = "scripts/install_st2.sh"
-      s.args   = "#{st2user} #{st2passwd} #{release}"
-      s.privileged = false
+     s.path = "scripts/install_st2.sh"
+     s.args   = "#{st2user} #{st2passwd} #{release}"
+     s.privileged = false
     end
   end
 
