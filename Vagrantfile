@@ -1,11 +1,63 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-release    = ENV['RELEASE'] ? ENV['RELEASE'] : 'stable'
+# Which release channel (stable or unstable to use)
+# Default: unstable
+# RELEASE=staging-stable
+# RELEASE=stable
+# RELEASE=unstable
+release    = ENV['RELEASE'] ? ENV['RELEASE'] : 'unstable'
+
+# Build source - used to install packages from a specific CircleCI build
+# Default: Packagecloud
+# Examples:
+# DEV=st2/5017
+# DEV=mistral/1012
+# DEV=st2-packages/3021
+dev        = ENV['DEV'] ? ENV['DEV'] : ''
+
+# The branch of st2-packages or bwc-installer to pull and use
+# NOTE: If the branch name just happens to be 48 hex characters, it will be
+#       interpreted as a license key - see the ENTERPRISE option below
+# Default: master
+# Examples:
+# BRANCH=master
+# BRANCH=yum-exclude-nginx
+branch     = ENV['BRANCH'] ? ENV['BRANCH'] : 'master'
+
+# The hostname of the Vagrant VM
+# Default: st2vagrant
+# Examples:
+# HOSTNAME=st2vagrant-rhel7
+# HOSTNAME=rhel7-testing
 hostname   = ENV['HOSTNAME'] ? ENV['HOSTNAME'] : 'st2vagrant'
+
+# The OS to spin up
+# Default: ubuntu/xenial64
+# Examples:
+# BOX=ubuntu/trusty64
+# BOX=ubuntu/xenial64
+# BOX=ubuntu/bionic64
+# BOX=centos/6
+# BOX=centos/7
 box        = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/xenial64'
+
+# The ST2 user
+# Default: st2admin
+# Example:
+# ST2USER=st2user
 st2user    = ENV['ST2USER'] ? ENV['ST2USER']: 'st2admin'
+
+# The ST2 user password
+# Default: Ch@ngeMe
+# Example: ST2PASSWORD=secret-tunnel/secret-tunnel/through-the-mountain/secret-secret-tunnel
 st2passwd  = ENV['ST2PASSWORD'] ? ENV['ST2PASSWORD'] : 'Ch@ngeMe'
+
+# The Packagecloud.io key for enterprise packages
+# If unspecified, only community packages will be installed
+# Example:
+# ENTERPRISE=0123456789abcdef0123456789abcdef0123456789abcdef
+enterprise = ENV['ENTERPRISE'] ? ENV['ENTERPRISE'] : ''
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
@@ -37,9 +89,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Start shell provisioning.
     st2.vm.provision "shell" do |s|
       s.path = "scripts/install_st2.sh"
-      s.args   = "#{st2user} #{st2passwd} #{release}"
+      s.args   = "#{st2user} #{st2passwd} #{release} #{dev} #{branch} #{enterprise}"
       s.privileged = false
     end
   end
-
 end

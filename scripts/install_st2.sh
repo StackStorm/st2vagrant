@@ -1,14 +1,46 @@
 #!/bin/bash
 
+USER="$1"
+PASSWORD="$2"
+
 # Select between recent stable (e.g. 1.4) or recent unstable (e.g. 1.5dev)
-if [[ $# > 2 ]]; then
-  if [[ $3 == "stable" ]] || [[ $3 == "unstable" ]]
-  then
-    RELEASE_FLAG="--$3"
-  else
-    echo -e "Use 'stable' for recent stable release, or 'unstable' to live on the edge."
-    exit 2
-  fi
+RELEASE_FLAG=""
+if [[ "$3" == "staging"* ]]; then
+  RELEASE_FLAG+=" --staging"
+fi
+if [[ "$3" == *"stable" ]]; then
+  RELEASE_FLAG+=" --stable"
+fi
+if [[ "$3" == *"unstable" ]]; then
+  RELEASE_FLAG+=" --unstable"
+fi
+
+DEV=""
+if [[ -n "$4" && "$4" == "st2/"* ]]; then
+  DEV="--dev=$4"
+  shift
+fi
+
+FORCE_BRANCH=""
+# This assumes that branch names will not be 48 hex digits, which is a pretty
+# reasonable assumption
+if [[ "$5" =~ ^[0-9a-fA-F]{48}$ ]]; then
+  FORCE_BRANCH="--force-branch=$4"
+  BRANCH="$4"
+  shift
+elif [[ -n "$4" ]]; then
+  FORCE_BRANCH="--force-branch=$4"
+  BRANCH="$4"
+  shift
+fi
+
+LICENSE_KEY=""
+if [[ -n "$4" ]]; then
+  LICENSE_KEY="$4"
+fi
+if [[ -z "$RELEASE_FLAG" ]]; then
+  echo -e "Use 'stable' for recent stable release, or 'unstable' to live on the edge."
+  exit 2
 fi
 
 echo "*** Let's install some net tools ***"
@@ -26,7 +58,7 @@ elif [[ -n "$DEBTEST" ]]; then
   sudo apt-get install -y curl
 else
   echo "Unknown Operating System."
-  echo "See list of supported OSes: https://github.com/StackStorm/st2vagrant/blob/master/README.md."
+  echo "See list of supported OSes: https://github.com/StackStorm/st2vagrant/blob/master/README.md"
   exit 2
 fi
 
@@ -43,6 +75,7 @@ if [[ -n "$RHTEST" ]]; then
     sudo ln -s /opt/rh/python27/root/usr/bin/pip /usr/local/bin/pip
     source /etc/environment
   elif [[ "$RHMAJVER" == '7' ]]; then
+    sudo yum install -y epel-release
     sudo yum install -y python
   fi
   sudo yum install -y python-pip git
@@ -56,4 +89,8 @@ sudo -H pip install virtualenv
 
 echo "*** Let's install StackStorm  ***"
 
-curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=$1 --password=$2 $RELEASE_FLAG
+if [[ -n "$LICENSE_KEY" ]]; then
+  curl -sSL https://raw.githubusercontent.com/StackStorm/bwc-installer/$BRANCH/scripts/bwc-installer.sh | bash -s -- --user=$USER --password=$PASSWORD $DEV $FORCE_BRANCH --license=$LICENSE_KEY $RELEASE_FLAG
+else
+  curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$USER --password=$PASSWORD $DEV $FORCE_BRANCH $RELEASE_FLAG
+fi
