@@ -171,8 +171,6 @@ echo '================ Testing ENTERPRISE VERSION ================'
 
 echo '---------------- Test: default options ---------------------'
 
-LICENSE_KEY=5c4447c5cd6d2022c420af15c8da37a58d5444ab483ca854
-
 # Default options
 LICENSE_KEY=${LICENSE_KEY} \
 vagrant up
@@ -199,8 +197,6 @@ vagrant destroy --force
 
 
 echo '---------------- Test: installation options ----------------'
-
-LICENSE_KEY=c4ac058d1315f5a06f05194532246bcffa965c5fae7f11c0
 
 # Repository
 REPO_TYPE=staging \
