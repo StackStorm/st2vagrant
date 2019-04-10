@@ -42,7 +42,7 @@ st2passwd   = ENV['ST2PASSWORD'] ? '-p "' + ENV['ST2PASSWORD'] + '"' : '-p "Ch@n
 release     = ENV['RELEASE'] ? '-r "' + ENV['RELEASE'] + '"' : '-r unstable'
 
 # Which release channel (staging or not to use)
-# Default: not staging
+# Default: (empty string, eg: not staging)
 # REPO_TYPE=staging
 repo_type   = ENV['REPO_TYPE'] ? '-t ' + ENV['REPO_TYPE'] : ''
 
@@ -55,8 +55,6 @@ repo_type   = ENV['REPO_TYPE'] ? '-t ' + ENV['REPO_TYPE'] : ''
 dev         = ENV['DEV'] ? '-d ' + ENV['DEV'] : ''
 
 # The branch of st2-packages or bwc-installer to pull and use
-# NOTE: If the branch name just happens to be 48 hex characters, it will be
-#       interpreted as a license key - see the ENTERPRISE option below
 # Default: master
 # Examples:
 # BRANCH=master
