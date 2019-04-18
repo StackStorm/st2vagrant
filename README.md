@@ -151,7 +151,7 @@ For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 To learn about packs and how to work with them, see
 [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
 
-#### Advanced Pack Development Synced Folder Workflow
+#### Advanced Pack Development Synced Folder Workflow Strategy
 
 One of the common use cases is pack development. In order to streamline a persistent local development environment, 
 the following approach could be used:
