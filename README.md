@@ -101,11 +101,11 @@ following:**
 
 If you wish to vagrant up with the VMWare Workstation or VMWare Fusion providers, eg: vmware_desktop , use this config when your default provider is vmware_desktop:
  
- ```BOX=bento/centos-7.6 RELEASE=stable; vagrant up```
+ ```BOX=bento/centos-7.6 RELEASE=stable vagrant up```
 
 If you have multiple providers installed, to force the vmwware_desktop provider:
 
- ```VAGRANT_DEFAULT_PROVIDER=vmware_desktop BOX=bento/centos-7.6 RELEASE=stable; vagrant up```
+ ```VAGRANT_DEFAULT_PROVIDER=vmware_desktop BOX=bento/centos-7.6 RELEASE=stable vagrant up```
 
 Only the bento/centos-7.6 has been tested. This vagrant box reliably ships with VMWare tools installed for synced folders.
 
