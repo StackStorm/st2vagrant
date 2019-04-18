@@ -135,7 +135,9 @@ on the VM. In the Vagrantfile we are using following line for enabling ***NFS sy
 To use this option, uncomment the line and change the location of `"path/to/folder/on/host"` to an
 existing directory on your laptop.
 
-**Warning:** If you mount the above synced folder prior to ST2 installation, the installation may fail due to synced folders 
+**Warning:** 
+
+If you mount the above synced folder prior to ST2 installation, the installation may fail due to synced folders 
 not supporting ownership and/or permissions changes by default.
 Also, notice that if you enable the above synced folder, it will *hide* the vagrant box's local /opt/stackstorm/packs
 folder. You will need to move the core packages here for ST2 to run properly. 
@@ -156,7 +158,12 @@ To learn about packs and how to work with them, see
 One of the common use cases is pack development. In order to streamline a persistent local development environment, 
 the following approach could be used:
 
-1. Synced folders you may wish to utilitze to speed up setup of Vagrant box:
+**Warning**
+
+Syncing the config directory before ST2 install will cause the installation to fail due to permissions. There is
+probably a workaround -> if you know it open an issue and let us know.  
+
+1. Synced folders you may wish to utilize to speed up setup of Vagrant box:
     
     * `config`          --> synced to  `/opt/stackstorm/config`
     * `datastore_load`  --> synced to `/opt/stackstorm/datastore_load`
