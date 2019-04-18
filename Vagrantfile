@@ -122,7 +122,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # VMWare HGFS-synced directory for pack development
     # WARNING: uncommenting this before ST2 install will cause it to fail trying to change permissions in synced folders
-    # st2.vm.synced_folder "/path/to/directory/on/host
+    # st2.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs"
 
     # VMWARE HGFS Alternate Approach
     # st2.vm.synced_folder "pack_dev/", "/opt/stackstorm/pack_dev"

@@ -97,6 +97,19 @@ following:**
 * CentOS 6.7 / RHEL 6.7
 * CentOS 7.2 / RHEL 7.2
 
+#### Using the vmware_desktop provider
+
+If you wish to vagrant up with the VMWare Workstation or VMWare Fusion providers, eg: vmware_desktop , use this config when your default provider is vmware_desktop:
+ 
+ ```BOX=bento/centos-7.6 RELEASE=stable; vagrant up```
+
+If you have multiple providers installed, to force the vmwware_desktop provider:
+
+ ```VAGRANT_DEFAULT_PROVIDER=vmware_desktop BOX=bento/centos-7.6 RELEASE=stable; vagrant up```
+
+Only the bento/centos-7.6 has been tested. This vagrant box reliably ships with VMWare tools installed for synced folders.
+
+
 #### NFS mount option for Pack development
 
 Playing with StackStorm ranges from creating rules and workflows, to turning your scripts into
@@ -111,10 +124,21 @@ desired locations.
 Better yet, create a custom NFS mount to mount a directory on your laptop to `/opt/stackstorm/packs`
 on the VM. In the Vagrantfile we are using following line for enabling ***NFS synced folder***:
 
+* VirtualBox (NFS)
+
 ```config.vm.synced_folder "path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']```
+
+* VMWare (Default: VMWare HGFS)
+
+``` config.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs"```
 
 To use this option, uncomment the line and change the location of `"path/to/folder/on/host"` to an
 existing directory on your laptop.
+
+**Warning:** If you mount the above synced folder prior to ST2 installation, the installation may fail due to synced folders 
+not supporting ownership and/or permissions changes by default.
+Also, notice that if you enable the above synced folder, it will *hide* the vagrant box's local /opt/stackstorm/packs
+folder. You will need to move the core packages here for ST2 to run properly. 
 
 By the time you read this hint, your VM is most likely already up and running. Not to worry: just
 uncomment the above mentioned line in your `Vagrantfile` and run `vagrant reload --no-provision`.
@@ -127,18 +151,33 @@ For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 To learn about packs and how to work with them, see
 [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
 
-## Using the vmware_desktop provider
+#### Advanced Pack Development Synced Folder Workflow
 
-If you wish to vagrant up with the VMWare Workstation or VMWare Fusion providers, eg: vmware_desktop , use this config when your default provider is vmware_desktop:
+One of the common use cases is pack development. In order to streamline a persistent local development environment, 
+the following approach could be used:
+
+1. Synced folders you may wish to utilitze to speed up setup of Vagrant box:
+    
+    * `config`          --> synced to  `/opt/stackstorm/config`
+    * `datastore_load`  --> synced to `/opt/stackstorm/datastore_load`
+    * `packs_dev`       --> synced to `/opt/stackstorm/packs_dev`
+
+2. Folder usage:
+
+    * `config` folder: You can persist pack configs such as `aws.yaml` or `jira.yaml` in this folder and they will be
+    present after vagrant up
+    * `datastore_load`: Use this folder to store a json file that you would import to the datastore using 
+    `st2 key load /opt/stackstorm/datastore_load/mykeystoredata.json`
+    * `packs_dev`: Use this folder to iterate on packs you are developing. After you commit your changes you can install
+     the pack in your Vagrant box:
+         - `cd /opt/stackstorm/packs_dev/YOUR_PACK_DIRECTORY`
+         - `st2 pack install file:///$PWD [--python3]` 
+         
+ 3. Additional information
  
- ```export BOX=bento/centos-7.6; export RELEASE=stable; vagrant up```
-
-If you have multiple providers installed, to force the vmwware_desktop provider:
-
- ```export VAGRANT_DEFAULT_PROVIDER=vmware_desktop; export BOX=bento/centos-7.6; export RELEASE=stable; vagrant up```
-
-Only the bento/centos-7.6 has been tested. This vagrant box reliably ships with VMWare tools installed for synced folders.
-
+    * This repo includes .gitignore entries for the 3 directories described above.
+    * This approach remove any installation conflicts, and prevents confusion of installing dev packs into ST2, since
+    the `st2 pack install` command will create a clone of the pack in `/opt/stackstorm/packs` directory.
 
 ## Manual installation
 
