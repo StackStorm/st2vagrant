@@ -108,8 +108,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
 
-    # Disable standard synced folder so we can override without issue
-    st2.vm.synced_folder ".", "/vagrant", disabled: true
+    # Disable standard synced folder if desired
+    # st2.vm.synced_folder ".", "/vagrant", disabled: true
 
 
     # NFS-synced directory for pack development
@@ -119,8 +119,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # NFS Advanced Pack Dev Approach (See README)
     # config.vm.synced_folder "pack_dev/", "/opt/stackstorm/pack_dev",  :nfs => true, :mount_options => ['nfsvers=3']
-    # config.vm.synced_folder "configs", "/opt/stackstorm/configs", :nfs => true, :mount_options => ['nfsvers=3']
     # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load", :nfs => true, :mount_options => ['nfsvers=3']
+
+    # This mount will break ST2 installation -> Use vagrant reload and uncomment this line to enable after ST2 is installed
+    # config.vm.synced_folder "configs", "/opt/stackstorm/configs", :nfs => true, :mount_options => ['nfsvers=3']
+
 
     # VMWare HGFS-synced directory for pack development
     # WARNING: uncommenting this before ST2 install will cause it to fail trying to change permissions in synced folders
@@ -128,8 +131,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # VMWARE HGFS Advanced Pack Dev Approach (See README)
     # config.vm.synced_folder "packs_dev/", "/opt/stackstorm/pack_dev"
-    # config.vm.synced_folder "configs", "/opt/stackstorm/configs"
     # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load"
+
+    # This mount will break ST2 installation -> Use vagrant reload and uncomment this line to enable after ST2 is installed
+    # config.vm.synced_folder "configs", "/opt/stackstorm/configs"
 
     # Configure a private network
     st2.vm.network :private_network, ip: "#{vm_ip}"
