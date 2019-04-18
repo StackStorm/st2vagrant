@@ -115,7 +115,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Change "/path/to/directory/on/host" to point to existing directory on your laptop/host and uncomment:
     # config.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
 
-    # NFS Alternate Approach (See README)
+    # NFS Advanced Pack Dev Approach (See README)
     # config.vm.synced_folder "pack_dev/", "/opt/stackstorm/pack_dev",  :nfs => true, :mount_options => ['nfsvers=3']
     # config.vm.synced_folder "configs", "/opt/stackstorm/configs", :nfs => true, :mount_options => ['nfsvers=3']
     # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load", :nfs => true, :mount_options => ['nfsvers=3']
@@ -124,7 +124,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # WARNING: uncommenting this before ST2 install will cause it to fail trying to change permissions in synced folders
     # st2.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs"
 
-    # VMWARE HGFS Alternate Approach
+    # VMWARE HGFS Advanced Pack Dev Approach (See README)
     # st2.vm.synced_folder "pack_dev/", "/opt/stackstorm/pack_dev"
     # st2.vm.synced_folder "configs", "/opt/stackstorm/configs"
     # st2.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load"

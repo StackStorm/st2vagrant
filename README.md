@@ -179,6 +179,8 @@ the following approach could be used:
     * This approach remove any installation conflicts, and prevents confusion of installing dev packs into ST2, since
     the `st2 pack install` command will create a clone of the pack in `/opt/stackstorm/packs` directory.
 
+See the `NFS Advanced Pack Dev Approach` and `VMWARE HGFS Advanced Pack Dev Approach` in the Vagrantfile for synced 
+folder configs that follow this strategy. 
 ## Manual installation
 
 To master StackStorm and understand how things are wired together, we strongly encourage you to
