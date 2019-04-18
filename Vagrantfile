@@ -75,6 +75,8 @@ branch      = ENV['BRANCH'] ? '-b "' + ENV['BRANCH'] + '"' : '-b "master"'
 license_key = ENV['LICENSE_KEY'] ? '-k ' + ENV['LICENSE_KEY'] : ''
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+# Minimum Vagrant Version
+Vagrant.require_version ">= 2.2.0"
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
