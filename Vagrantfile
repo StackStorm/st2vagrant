@@ -127,9 +127,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # st2.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs"
 
     # VMWARE HGFS Advanced Pack Dev Approach (See README)
-    # st2.vm.synced_folder "pack_dev/", "/opt/stackstorm/pack_dev"
-    # st2.vm.synced_folder "configs", "/opt/stackstorm/configs"
-    # st2.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load"
+    # config.vm.synced_folder "packs_dev/", "/opt/stackstorm/pack_dev"
+    # config.vm.synced_folder "configs", "/opt/stackstorm/configs"
+    # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load"
 
     # Configure a private network
     st2.vm.network :private_network, ip: "#{vm_ip}"
