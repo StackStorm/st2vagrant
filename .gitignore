@@ -1,1 +1,7 @@
 .vagrant*
+configs/*
+datastore_load/*
+packs_dev/*
+
+
+
