@@ -14,7 +14,8 @@
 # BOX=ubuntu/bionic64
 # BOX=centos/6
 # BOX=centos/7
-# BOX=bento/centos-7.6 # Tested with vmware_fusion provider, vmware tools installed properly
+# # Tested with vmware_fusion provider, vmware tools installed properly
+# BOX=bento/centos-7.6
 vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/xenial64'
 
 # The hostname of the Vagrant VM
