@@ -82,9 +82,11 @@ for best results:
 * bento/centos-7.2 for CentOS 7.2
 * bento/centos-6.7 for CentOS 6.7
 
-Example:
+Examples:
 
 ```BOX="bento/centos-7.2" vagrant up```
+
+```BOX=bento/centos-7.6 RELEASE=stable vagrant up```
 
 Or use your favorite vagrant box. **Note that StackStorm installs from native Linux packages, which
 are built for following OSes only. Make make sure the OS flavor of your box is one of the
@@ -124,6 +126,19 @@ For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 
 To learn about packs and how to work with them, see
 [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
+
+## Using the vmware_desktop provider
+
+If you wish to vagrant up with the VMWare Workstation or VMWare Fusion providers, eg: vmware_desktop , use this config when your default provider is vmware_desktop:
+ 
+ ```export BOX=bento/centos-7.6; export RELEASE=stable; vagrant up```
+
+If you have multiple providers installed, to force the vmwware_desktop provider:
+
+ ```export VAGRANT_DEFAULT_PROVIDER=vmware_desktop; export BOX=bento/centos-7.6; export RELEASE=stable; vagrant up```
+
+Only the bento/centos-7.6 has been tested. This vagrant box reliably ships with VMWare tools installed for synced folders.
+
 
 ## Manual installation
 

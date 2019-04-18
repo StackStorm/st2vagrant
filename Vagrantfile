@@ -1,5 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+#
+# To force a specific provider set the VAGRANT_DEFAULT_PROVIDER environment variable.
+# Vagrant defaults to virtual box if you have it installed
+# eg: VAGRANT_DEFAULT_PROVIDER=vmware_deskop
+# eg: VAGRANT_DEFAULT_PROVIDER=virtualbox
 
 # The OS to spin up
 # Default: ubuntu/xenial64
@@ -9,6 +14,8 @@
 # BOX=ubuntu/bionic64
 # BOX=centos/6
 # BOX=centos/7
+# # Tested with vmware_fusion provider, vmware tools installed properly
+# BOX=bento/centos-7.6
 vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/xenial64'
 
 # The hostname of the Vagrant VM
@@ -72,15 +79,31 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "#{vm_hostname}" do |st2|
-    # Box details
+    # Global Box details
     st2.vm.box = "#{vm_box}"
     st2.vm.hostname = "#{vm_hostname}"
 
     # Box Specifications
+    # VirtualBox
     st2.vm.provider :virtualbox do |vb|
+      vb.gui = false      # Change to true to launch console
       vb.name = "#{vm_hostname}"
       vb.memory = 4096
       vb.cpus = 2
+    end
+
+    # VMWare Desktop (fusion/workstation)
+    ["vmware_fusion", "vmware_workstation"].each do |provider|
+      st2.vm.provider provider do |vmw, override|
+        vmw.gui = true   # Change to true to launch console
+        vmw.vmx["ethernet0.virtualDev"] = "vmxnet3"
+        vmw.vmx["memsize"] = 4096
+        vmw.vmx["numvcpus"] = 2
+        # Do not overwrite pci-slot number (https://www.vagrantup.com/docs/vmware/boxes.html#making-compatible-boxes)
+        config.vm.provider provider do |vmware|
+          vmware.whitelist_verified = true
+        end
+      end
     end
 
     # NFS-synced directory for pack development
