@@ -14,7 +14,7 @@
 # BOX=ubuntu/bionic64
 # BOX=centos/6
 # BOX=centos/7
-# # Tested with vmware_fusion provider, vmware tools installed properly
+# # Below box tested with vmware_fusion provider, vmware tools installed properly
 # BOX=bento/centos-7.6
 vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/xenial64'
 
@@ -111,29 +111,52 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Disable standard synced folder if desired
     # st2.vm.synced_folder ".", "/vagrant", disabled: true
 
+    ###############################################
+    # NFS-synced directories for pack development #
+    ###############################################
 
-    # NFS-synced directory for pack development
     # WARNING: uncommenting this before ST2 install will cause it to fail trying to change permissions in synced folders
     # Change "/path/to/directory/on/host" to point to existing directory on your laptop/host and uncomment:
+
     # config.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
 
-    # NFS Advanced Pack Dev Approach (See README)
+
+    # NFS Advanced Pack Dev Approach (See README) - Works around problems with overwriting /opt/stackstorm/packs directory
+
+    # Shared folder to share packs to develop or install
     # config.vm.synced_folder "pack_dev/", "/opt/stackstorm/pack_dev",  :nfs => true, :mount_options => ['nfsvers=3']
+
+    # Shared folder to import/export a datastore backup
     # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load", :nfs => true, :mount_options => ['nfsvers=3']
 
     # This mount will break ST2 installation -> Use vagrant reload and uncomment this line to enable after ST2 is installed
+    # This allows you to sync in a directory of packs that can then be installed normally via `st2 pack install`
+
     # config.vm.synced_folder "configs", "/opt/stackstorm/configs", :nfs => true, :mount_options => ['nfsvers=3']
 
+    #######################################################
+    # VMWare HGFS-synced directories for pack development #
+    # Only works with vmware_desktop provider             #
+    #######################################################
 
-    # VMWare HGFS-synced directory for pack development
     # WARNING: uncommenting this before ST2 install will cause it to fail trying to change permissions in synced folders
+    # NOTE:    Setting up a synced directory to /opt/stackstorm/packs will overwrite the packs directory.
+    #          Make sure you understand the `st2 pack install` and post installation ramification of this approach.
+
     # config.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs"
 
-    # VMWARE HGFS Advanced Pack Dev Approach (See README)
+
+    # VMWARE HGFS Advanced Pack Dev Approach (See README) - Works around problems with overwriting /opt/stackstorm/packs directory
+
+    # Shared folder to share packs to develop or install
     # config.vm.synced_folder "packs_dev/", "/opt/stackstorm/pack_dev"
+
+    # Shared folder to import/export a datastore backup
     # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load"
 
     # This mount will break ST2 installation -> Use vagrant reload and uncomment this line to enable after ST2 is installed
+    # This allows you to sync in a directory of packs that can then be installed normally via `st2 pack install`
+
     # config.vm.synced_folder "configs", "/opt/stackstorm/configs"
 
     # Configure a private network
