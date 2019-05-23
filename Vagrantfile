@@ -97,7 +97,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # VMWare Desktop (fusion/workstation)
     ["vmware_fusion", "vmware_workstation"].each do |provider|
       st2.vm.provider provider do |vmw, override|
-        vmw.gui = true   # Change to true to launch console
+        vmw.gui = false   # Change to true to launch console
         vmw.vmx["ethernet0.virtualDev"] = "vmxnet3"
         vmw.vmx["memsize"] = 4096
         vmw.vmx["numvcpus"] = 2
@@ -149,7 +149,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # VMWARE HGFS Advanced Pack Dev Approach (See README) - Works around problems with overwriting /opt/stackstorm/packs directory
 
     # Shared folder to share packs to develop or install
-    # config.vm.synced_folder "packs_dev/", "/opt/stackstorm/pack_dev"
+    # config.vm.synced_folder "packs_dev/", "/opt/stackstorm/packs_dev"
 
     # Shared folder to import/export a datastore backup
     # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load"

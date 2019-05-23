@@ -2,6 +2,7 @@
 configs/*
 datastore_load/*
 packs_dev/*
-.idea/
+.idea/*
+
 
 
