@@ -124,7 +124,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # NFS Advanced Pack Dev Approach (See README) - Works around problems with overwriting /opt/stackstorm/packs directory
 
     # Shared folder to share packs to develop or install
-    # config.vm.synced_folder "pack_dev/", "/opt/stackstorm/pack_dev",  :nfs => true, :mount_options => ['nfsvers=3']
+    # config.vm.synced_folder "packs_dev/", "/opt/stackstorm/packs_dev",  :nfs => true, :mount_options => ['nfsvers=3']
 
     # Shared folder to import/export a datastore backup
     # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load", :nfs => true, :mount_options => ['nfsvers=3']
