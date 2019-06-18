@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+# REQUIRED ENVIRONMENT VARIABLES:
+#
+# ENTERPRISE_UNSTABLE_LICENSE_KEY
+# STAGING_ENTERPRISE_STABLE_LICENSE_KEY
+
+
 E_PARAM_ERR=98
 E_ASSERT_FAILED=99
 
@@ -172,27 +179,28 @@ echo '================ Testing ENTERPRISE VERSION ================'
 echo '---------------- Test: default options ---------------------'
 
 # Default options
-LICENSE_KEY=${LICENSE_KEY} \
+# LICENSE_KEY should be for the enterprise-unstable repository
+LICENSE_KEY=${ENTERPRISE_UNSTABLE_LICENSE_KEY} \
 vagrant up
 
 sleep 10
 
 # Check the Packagecloud community repository
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${ENTERPRISE_UNSTABLE_LICENSE_KEY} \
 vagrant ssh --command 'grep -qE "^deb https://packagecloud.io/StackStorm/unstable/ubuntu/ xenial main$" /etc/apt/sources.list.d/StackStorm*stable.list'
 assert "$? -eq 0" $LINENO
 
 # Check the Packagecloud enterprise repository
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${ENTERPRISE_UNSTABLE_LICENSE_KEY} \
 vagrant ssh --command 'grep -qE "^deb https://.*:@packagecloud.io/StackStorm/enterprise-unstable/ubuntu/ xenial main$" /etc/apt/sources.list.d/StackStorm*enterprise*.list'
 assert "$? -eq 0" $LINENO
 
 # Check that installed packages are for the unstable (dev-) enterprise version
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${ENTERPRISE_UNSTABLE_LICENSE_KEY} \
 vagrant ssh --command "apt search ^bwc- 2>/dev/null | grep -qE '^bwc-(enterprise|ui).*[[:digit:]]*\.[[:digit:]]*dev\-[[:digit:]]*.*\[.*installed.*\]\$'"
 assert "$? -eq 0" $LINENO
 
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${ENTERPRISE_UNSTABLE_LICENSE_KEY} \
 vagrant destroy --force
 
 
@@ -201,7 +209,7 @@ echo '---------------- Test: installation options ----------------'
 # Repository
 REPO_TYPE=staging \
 RELEASE=stable \
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${STAGING_ENTERPRISE_STABLE_LICENSE_KEY} \
 vagrant up
 
 sleep 10
@@ -209,25 +217,25 @@ sleep 10
 # Check the Packagecloud community repository
 REPO_TYPE=staging \
 RELEASE=stable \
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${STAGING_ENTERPRISE_STABLE_LICENSE_KEY} \
 vagrant ssh --command 'grep -qE "^deb https://packagecloud.io/StackStorm/staging-stable/ubuntu/ xenial main$" /etc/apt/sources.list.d/StackStorm*stable.list'
 assert "$? -eq 0" $LINENO
 
 # Check the Packagecloud enterprise repository
 REPO_TYPE=staging \
 RELEASE=stable \
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${STAGING_ENTERPRISE_STABLE_LICENSE_KEY} \
 vagrant ssh --command 'grep -qE "^deb https://.*:@packagecloud.io/StackStorm/staging-enterprise/ubuntu/ xenial main$" /etc/apt/sources.list.d/StackStorm*enterprise*.list'
 assert "$? -eq 0" $LINENO
 
 # Check that installed packages are for the stable (non dev-) enterprise version
 REPO_TYPE=staging \
 RELEASE=stable \
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${STAGING_ENTERPRISE_STABLE_LICENSE_KEY} \
 vagrant ssh --command "apt search ^bwc- 2>/dev/null | grep -qE '^bwc-(enterprise|ui).*[[:digit:]]*\.[[:digit:]]*\-[[:digit:]]*.*\[.*installed.*\]\$'"
 assert "$? -eq 0" $LINENO
 
 REPO_TYPE=staging \
 RELEASE=stable \
-LICENSE_KEY=${LICENSE_KEY} \
+LICENSE_KEY=${STAGING_ENTERPRISE_STABLE_LICENSE_KEY} \
 vagrant destroy --force
