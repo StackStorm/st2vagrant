@@ -74,6 +74,45 @@ branch      = ENV['BRANCH'] ? '-b "' + ENV['BRANCH'] + '"' : '-b "master"'
 # LICENSE_KEY=0123456789abcdef0123456789abcdef0123456789abcdef
 license_key = ENV['LICENSE_KEY'] ? '-k ' + ENV['LICENSE_KEY'] : ''
 
+# A comma-separated list of synced folder options, specified as key/value pairs
+# Option values are interpreted as Ruby code
+# Default: (empty)
+# Examples:
+# SYNCED_FOLDER_OPTIONS=vmware  # -> {} (no options)
+# SYNCED_FOLDER_OPTIONS=''      # -> {nfs:true,mount_options:["nfsvers=3"]} (Virtualbox)
+default_sf_options = {}
+all_sf_options = ENV['SYNCED_FOLDER_OPTIONS'] == 'vmware' ? [] : ['nfs:true', 'mount_options:["nfsvers=3"]']
+all_sf_options.each do |opt|
+  opt_name, opt_value = opt.split(':')
+  opt_value = eval(opt_value)
+  default_sf_options[opt_name.to_sym] = opt_value
+end
+
+# A comma-separated list of folder pairs/triples to sync
+# Each folder pair is specified as host_folder:guest_folder
+# Each folder triple is specified as host_folder:guest_folder:shared_folder_options
+# Relative host folders are specified relative to this Vagrantfile
+# Shared folder options are evaluated as Ruby code
+# Default: ''
+# Examples:
+# CUSTOM_SYNCED_FOLDERS='../st2client.js,../hubot-stackstorm,../st2chatops'
+# CUSTOM_SYNCED_FOLDERS='../st2client.js:/home/vagrant/st2client.js,'\
+#                       '../hubot-stackstorm:/home/vagrant/hubot-stackstorm,'\
+#                       '../st2chatops:/home/vagrant/st2chatops,'\
+#                       '../exchange:/home/vagrant/exchange,'\
+#                       '../st2tests:/home/vagrant/st2tests'\
+#                       '../st2tests:/home/vagrant/st2web'
+# CUSTOM_SYNCED_FOLDERS='../st2client.js:/home/vagrant/st2client.js:'\
+#                       '../hubot-stackstorm:/home/vagrant/hubot-stackstorm,'
+all_custom_synced_folders = ENV['CUSTOM_SYNCED_FOLDERS'] ? ENV['CUSTOM_SYNCED_FOLDERS'].scan(/([^:,]+)(?::([^:,]+))?(?::(?:((?:\{[^:}]+?\})|(?:\[[^:\]]+?\]))))?/) : []
+all_custom_synced_folders.each do |sfpair|
+  host_folder, guest_folder, sf_options = sfpair
+  guest_folder = guest_folder ? guest_folder : "/home/vagrant/#{File.basename(host_folder)}"
+  sf_options = sf_options ? eval(sf_options) : {}
+
+  vm_synced_folders.push [host_folder, guest_folder, default_sf_options.merge(sf_options)]
+end
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 # Minimum Vagrant Version
 Vagrant.require_version ">= 2.2.0"
@@ -108,56 +147,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
 
-    # Disable standard synced folder if desired
-    # st2.vm.synced_folder ".", "/vagrant", disabled: true
-
-    ###############################################
-    # NFS-synced directories for pack development #
-    ###############################################
-
-    # WARNING: uncommenting this before ST2 install will cause it to fail trying to change permissions in synced folders
-    # Change "/path/to/directory/on/host" to point to existing directory on your laptop/host and uncomment:
-
-    # config.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']
-
-
-    # NFS Advanced Pack Dev Approach (See README) - Works around problems with overwriting /opt/stackstorm/packs directory
-
-    # Shared folder to share packs to develop or install
-    # config.vm.synced_folder "packs_dev/", "/opt/stackstorm/packs_dev",  :nfs => true, :mount_options => ['nfsvers=3']
-
-    # Shared folder to import/export a datastore backup
-    # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load", :nfs => true, :mount_options => ['nfsvers=3']
-
-    # This mount will break ST2 installation -> Use vagrant reload and uncomment this line to enable after ST2 is installed
-    # This allows you to sync in a directory of packs that can then be installed normally via `st2 pack install`
-
-    # config.vm.synced_folder "configs", "/opt/stackstorm/configs", :nfs => true, :mount_options => ['nfsvers=3']
-
-    #######################################################
-    # VMWare HGFS-synced directories for pack development #
-    # Only works with vmware_desktop provider             #
-    #######################################################
-
-    # WARNING: uncommenting this before ST2 install will cause it to fail trying to change permissions in synced folders
-    # NOTE:    Setting up a synced directory to /opt/stackstorm/packs will overwrite the packs directory.
-    #          Make sure you understand the `st2 pack install` and post installation ramification of this approach.
-
-    # config.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs"
-
-
-    # VMWARE HGFS Advanced Pack Dev Approach (See README) - Works around problems with overwriting /opt/stackstorm/packs directory
-
-    # Shared folder to share packs to develop or install
-    # config.vm.synced_folder "packs_dev/", "/opt/stackstorm/packs_dev"
-
-    # Shared folder to import/export a datastore backup
-    # config.vm.synced_folder "datastore_load", "/opt/stackstorm/datastore_load"
-
-    # This mount will break ST2 installation -> Use vagrant reload and uncomment this line to enable after ST2 is installed
-    # This allows you to sync in a directory of packs that can then be installed normally via `st2 pack install`
-
-    # config.vm.synced_folder "configs", "/opt/stackstorm/configs"
+    vm_synced_folders.each do |host_folder, guest_folder, sf_options|
+      st2.vm.synced_folder(host_folder, guest_folder, **sf_options)
+    end
 
     # Configure a private network
     st2.vm.network :private_network, ip: "#{vm_ip}"
