@@ -88,6 +88,35 @@ all_sf_options.each do |opt|
   default_sf_options[opt_name.to_sym] = opt_value
 end
 
+# A comma-separated list of common folders to sync
+# Available common folders:
+#   .                 /vagrant
+#   configs           /opt/stackstorm/configs
+#   packs_dev         /opt/stackstorm/packs_dev
+#   packs             /opt/stackstorm/packs
+#   datastore_load    /opt/stackstorm/datastore_load
+#
+# Default: ''
+# Examples:
+# SYNCED_FOLDERS='.'
+# SYNCED_FOLDERS='.,configs'
+# SYNCED_FOLDERS='.,configs,packs_dev,packs,datastore_load'
+vm_synced_folders = []
+all_synced_folders = ENV['SYNCED_FOLDERS'] ? ENV['SYNCED_FOLDERS'].split(',') : []
+all_synced_folders_map = {
+  '.':              ['/vagrant', disabled: true],
+  'configs':        ['/opt/stackstorm/configs', {}],
+  'packs_dev':      ['/opt/stackstorm/packs_dev', {}],
+  'packs':          ['/opt/stackstorm/packs', {}],
+  'datastore_load': ['/opt/stacsktorm/datastore_load', {}],
+}
+all_synced_folders.each do |sf|
+  vm_synced_folder = all_synced_folders_map.fetch(sf, nil)
+  next if not vm_synced_folder
+
+  vm_synced_folders.push [sf, vm_synced_folder[0], default_sf_options.merge(vm_synced_folder[1])]
+end
+
 # A comma-separated list of folder pairs/triples to sync
 # Each folder pair is specified as host_folder:guest_folder
 # Each folder triple is specified as host_folder:guest_folder:shared_folder_options
