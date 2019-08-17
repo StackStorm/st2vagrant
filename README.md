@@ -96,6 +96,7 @@ Or use your favorite vagrant box. **Note that StackStorm installs from native Li
 are built for following OSes only. Make make sure the OS flavor of your box is one of the
 following:**
 
+* Ubuntu 18.04 (Xenial Xerus)
 * **Ubuntu 16.04 (Xenial Xerus)**
 * Ubuntu 14.04 (Trusty Tahr)
 
