@@ -97,7 +97,7 @@ are built for following OSes only. Make make sure the OS flavor of your box is o
 following:**
 
 * Ubuntu 18.04 (Xenial Xerus)
-* **Ubuntu 16.04 (Xenial Xerus)**
+* **Ubuntu 16.04 (Xenial Xerus)** (default)
 * Ubuntu 14.04 (Trusty Tahr)
 
 * CentOS 7.2 / RHEL 7.2
