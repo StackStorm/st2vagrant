@@ -84,9 +84,13 @@ for best results:
 
 Examples:
 
-```BOX="bento/centos-7.2" vagrant up```
+```bash
+BOX="bento/centos-7.2" vagrant up
+```
 
-```BOX=bento/centos-7.6 RELEASE=stable vagrant up```
+```bash
+BOX=bento/centos-7.6 RELEASE=stable vagrant up
+```
 
 Or use your favorite vagrant box. **Note that StackStorm installs from native Linux packages, which
 are built for following OSes only. Make make sure the OS flavor of your box is one of the
@@ -94,8 +98,9 @@ following:**
 
 * **Ubuntu 16.04 (Xenial Xerus)**
 * Ubuntu 14.04 (Trusty Tahr)
-* CentOS 6.7 / RHEL 6.7
+
 * CentOS 7.2 / RHEL 7.2
+* CentOS 6.7 / RHEL 6.7
 
 #### Using the vmware_desktop provider
 
@@ -114,7 +119,7 @@ Only the bento/centos-7.6 has been tested. This vagrant box reliably ships with 
 
 Playing with StackStorm ranges from creating rules and workflows, to turning your scripts into
 actions, to writing custom sensors. And all of that involves working with files under
-`/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via ssh, but with all your favorite tools
+`/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via SSH, but with all your favorite tools
 already set up on your laptop, it's convenient to hack files and work with `git` there on the host.
 
 You can create your pack directories under `st2vagrant/` on your host. Vagrant automatically maps
@@ -155,8 +160,8 @@ To learn about packs and how to work with them, see
 
 #### Advanced Pack Development Synced Folder Workflow Strategy
 
-One of the common use cases is pack development. In order to streamline a persistent local development environment, 
-the following approach could be used:
+One of the common use cases is pack development. In order to streamline a persistent local
+development environment, the following approach could be used:
 
 **Warning**
 
@@ -187,7 +192,9 @@ probably a workaround -> if you know it open an issue and let us know.
     the `st2 pack install` command will create a clone of the pack in `/opt/stackstorm/packs` directory.
 
 See the `NFS Advanced Pack Dev Approach` and `VMWARE HGFS Advanced Pack Dev Approach` in the Vagrantfile for synced 
-folder configs that follow this strategy. 
+folder configs that follow this strategy.
+
+
 ## Manual installation
 
 To master StackStorm and understand how things are wired together, we strongly encourage you to
@@ -196,6 +203,7 @@ To master StackStorm and understand how things are wired together, we strongly e
 benefit from this Vagrantfile to get the Linux VM up and running: follow instructions to
 install Vagrant & VirtualBox to get a Linux VM, and simply comment out the
 `st2.vm.provision "shell"...` section in your `Vagrantfile` before running `vagrant up`.
+
 
 ## Common problems and solutions
 
@@ -226,6 +234,7 @@ exports:3: no usable directories in export entry
 exports:3: using fallback (marked offline): /Volumes/Repo
 ```
 FIX: Remove residuals from `/etc/exports` file on the host machine, and do `vagrant reload` again.
+
 
 ## Support
 
