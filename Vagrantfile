@@ -108,7 +108,7 @@ all_synced_folders_map = {
   'config'=>         ['/opt/stackstorm/config', {}],
   'packs_dev'=>      ['/opt/stackstorm/packs_dev', {}],
   'packs'=>          ['/opt/stackstorm/packs', {}],
-  'datastore_load'=> ['/opt/stacsktorm/datastore_load', {}],
+  'datastore_load'=> ['/opt/stackstorm/datastore_load', {}],
 }
 all_synced_folders.each do |sf|
   vm_synced_folder = all_synced_folders_map.fetch(sf, nil)
