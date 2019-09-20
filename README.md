@@ -84,79 +84,139 @@ for best results:
 
 Examples:
 
-```BOX="bento/centos-7.2" vagrant up```
+```bash
+BOX="bento/centos-7.2" vagrant up
+```
 
-```BOX=bento/centos-7.6 RELEASE=stable vagrant up```
+```bash
+BOX=bento/centos-7.6 RELEASE=stable vagrant up
+```
 
 Or use your favorite vagrant box. **Note that StackStorm installs from native Linux packages, which
 are built for following OSes only. Make make sure the OS flavor of your box is one of the
 following:**
 
-* **Ubuntu 16.04 (Xenial Xerus)**
+* Ubuntu 18.04 (Xenial Xerus)
+* **Ubuntu 16.04 (Xenial Xerus)** (default)
 * Ubuntu 14.04 (Trusty Tahr)
-* CentOS 6.7 / RHEL 6.7
+
 * CentOS 7.2 / RHEL 7.2
+* CentOS 6.7 / RHEL 6.7
 
-#### Using the vmware_desktop provider
+### Synced folders
 
-If you wish to vagrant up with the VMWare Workstation or VMWare Fusion providers, eg: vmware_desktop , use this config when your default provider is vmware_desktop:
- 
- ```BOX=bento/centos-7.6 RELEASE=stable vagrant up```
+**Warning:**
 
-If you have multiple providers installed, to force the vmwware_desktop provider:
-
- ```VAGRANT_DEFAULT_PROVIDER=vmware_desktop BOX=bento/centos-7.6 RELEASE=stable vagrant up```
-
-Only the bento/centos-7.6 has been tested. This vagrant box reliably ships with VMWare tools installed for synced folders.
-
-
-#### NFS mount option for Pack development
-
-Playing with StackStorm ranges from creating rules and workflows, to turning your scripts into
-actions, to writing custom sensors. And all of that involves working with files under
-`/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via ssh, but with all your favorite tools
-already set up on your laptop, it's convenient to hack files and work with `git` there on the host.
-
-You can create your pack directories under `st2vagrant/` on your host. Vagrant automatically maps
-it's host directory to `/vagrant` directory on the VM, where you can symlink files and dirs to
-desired locations.
-
-Better yet, create a custom NFS mount to mount a directory on your laptop to `/opt/stackstorm/packs`
-on the VM. In the Vagrantfile we are using following line for enabling ***NFS synced folder***:
-
-* VirtualBox (NFS)
-
-```config.vm.synced_folder "path/to/folder/on/host", "/opt/stackstorm/packs", :nfs => true, :mount_options => ['nfsvers=3']```
-
-* VMWare (Default: VMWare HGFS)
-
-``` config.vm.synced_folder "/path/to/directory/on/host", "/opt/stackstorm/packs"```
-
-To use this option, uncomment the line and change the location of `"path/to/folder/on/host"` to an
-existing directory on your laptop.
-
-**Warning:** 
-
-If you mount the above synced folder prior to ST2 installation, the installation may fail due to synced folders 
-not supporting ownership and/or permissions changes by default.
-Also, notice that if you enable the above synced folder, it will *hide* the vagrant box's local /opt/stackstorm/packs
-folder. You will need to move the core packages here for ST2 to run properly. 
+If you mount the above synced folder prior to ST2 installation, the installation may fail due to
+synced folders not supporting ownership and/or permissions changes by default.
+Also, notice that if you enable the above synced folder, it will *hide* the vagrant box's local
+/opt/stackstorm/packs folder. You will need to move the core packages here for ST2 to run properly.
 
 By the time you read this hint, your VM is most likely already up and running. Not to worry: just
 uncomment the above mentioned line in your `Vagrantfile` and run `vagrant reload --no-provision`.
-This will restart
-the VM and apply the new config without running the provision part, so you won't reinstall st2.
-Vagrant will however ask you for your laptop password to sync the folders.
+This will restart the VM and apply the new config without running the provision part, so you won't
+reinstall st2. Vagrant will however ask you for your laptop password to sync the folders.
 
 For details on NFS refer: https://www.vagrantup.com/docs/synced-folders/nfs.html
 
 To learn about packs and how to work with them, see
 [StackStorm documentation on packs!](https://docs.stackstorm.com/latest/packs.html)
 
+#### Using the vmware_desktop provider
+
+If you wish to startup a VM with the VMWare Workstation or VMWare Fusionproviders,
+eg: vmware_desktop , you will need to specify `SYNCED_FOLDER_OPTIONS=vmware` when
+running `vagrant up`.
+
+```
+SYNCED_FOLDER_OPTIONS=vmware BOX=bento/centos-7.6 RELEASE=stable vagrant up
+```
+
+If you have multiple providers installed, to force the vmwware_desktop provider:
+
+```bash
+VAGRANT_DEFAULT_PROVIDER=vmware_desktop SYNCED_FOLDER_OPTIONS=vmware BOX=bento/centos-7.6 RELEASE=stable vagrant up
+```
+
+Only the bento/centos-7.6 has been tested. This vagrant box reliably ships with VMWare
+tools installed for synced folders.
+
+The options to `synced_folder` are the following for the VM provider:
+
+| Provider             | Synced folder options                         |
+| -------------------- | --------------------------------------------- |
+| VMWare               | `**{}` (no options)                           |
+| Virtualbox (default) | `**{nfs: true, mount_options: ["nfsvers=3"]}` |
+
+#### Common synced folders for Pack development
+
+Playing with StackStorm ranges from creating rules and workflows, to turning your scripts into
+actions, to writing custom sensors. And all of that involves working with files under
+`/opt/stackstorm/packs` on `st2vagrant` VM. One can do it via SSH, but with all your favorite tools
+already set up on your laptop, it's convenient to hack files and work with `git` there on the host.
+
+You can create your pack directories under `st2vagrant/` on your host. Vagrant automatically maps
+it's host directory to `/vagrant` directory on the VM, where you can symlink files and dirs to
+desired locations.
+
+Alternatively, you can specify a comma-separated list of common synced folders in the the
+`SYNCED_FOLDERS` environment variable to mount them in the guest VM.
+
+```bash
+SYNCED_FOLDERS=packs,datastore_load vagrant up
+```
+
+Available common synced folders are:
+
+| Host folder        | Guest folder                     |
+| ------------------ | -------------------------------- |
+| `.`                | `/vagrant`                       |
+| `./config`         | `/opt/stackstorm/config`         |
+| `./packs`          | `/opt/stackstorm/packs`          |
+| `./packs_dev`      | `/opt/stackstorm/packs_dev`      |
+| `./datastore_load` | `/opt/stackstorm/datastore_load` |
+
+#### Custom synced folders
+
+If you would like to use synced folders that are not one of the common synced folders, you can
+specify a comma-separated list of custom folders to sync in the `CUSTOM_SYNCED_FOLDERS`
+environment variable.
+
+There are different ways to specify synced folders. You can specify just the host folder, which
+will be mounted to `/home/vagrant/{folder}` within the guest, using the mount settings specified
+with `SYNCED_FOLDER_OPTIONS`.
+
+```bash
+CUSTOM_SYNCED_FOLDERS=../st2client.js,../hubot-stackstorm vagrant up
+```
+
+will mean `../st2client.js` and `../hubot-stackstorm` will be mounted into
+`/home/vagrant/st2client.js` and `/home/vagrant/hubot-stackstorm`, respectively, in the guest.
+
+You can also specify the host folder as well as the guest folder, by separating them with a `:`:
+
+```bash
+CUSTOM_SYNCED_FOLDERS=../st2client.js:/custom/dir/st2client.js,../hubot-stackstorm:/custom/dir/hubot-stackstorm vagrant up
+```
+
+This will mount the directories into `/custom/dir/st2client.js` and `/custom/dir/hubot-stackstorm`,
+respectively, using the default mount settings specified with `SYNCED_FOLDER_OPTIONS`.
+
+Finally, you can specify mount options individually for each synced folder by adding them after
+another `:`:
+
+```bash
+CUSTOM_SYNCED_FOLDERS=../st2client.js:/custom/dir/st2client.js:{disabled:true},../hubot-stackstorm:/custom/dir/hubot-stackstorm:{custom_option:["nfsvers=3"]} vagrant up
+```
+
+The options will be `eval()`ed (as a Ruby snippet) within the `Vagrantfile`, then used in a double
+splat argument. This means that you can specify all options to the `vm.synced_folder` function
+in these options.
+
 #### Advanced Pack Development Synced Folder Workflow Strategy
 
-One of the common use cases is pack development. In order to streamline a persistent local development environment, 
-the following approach could be used:
+One of the common use cases is pack development. In order to streamline a persistent local
+development environment, the following approach could be used:
 
 **Warning**
 
@@ -165,7 +225,7 @@ probably a workaround -> if you know it open an issue and let us know.
 
 1. Synced folders you may wish to utilize to speed up setup of Vagrant box:
     
-    * `config`          --> synced to  `/opt/stackstorm/config`
+    * `config`          --> synced to `/opt/stackstorm/config`
     * `datastore_load`  --> synced to `/opt/stackstorm/datastore_load`
     * `packs_dev`       --> synced to `/opt/stackstorm/packs_dev`
 
@@ -187,7 +247,9 @@ probably a workaround -> if you know it open an issue and let us know.
     the `st2 pack install` command will create a clone of the pack in `/opt/stackstorm/packs` directory.
 
 See the `NFS Advanced Pack Dev Approach` and `VMWARE HGFS Advanced Pack Dev Approach` in the Vagrantfile for synced 
-folder configs that follow this strategy. 
+folder configs that follow this strategy.
+
+
 ## Manual installation
 
 To master StackStorm and understand how things are wired together, we strongly encourage you to
@@ -196,6 +258,7 @@ To master StackStorm and understand how things are wired together, we strongly e
 benefit from this Vagrantfile to get the Linux VM up and running: follow instructions to
 install Vagrant & VirtualBox to get a Linux VM, and simply comment out the
 `st2.vm.provision "shell"...` section in your `Vagrantfile` before running `vagrant up`.
+
 
 ## Common problems and solutions
 
@@ -226,6 +289,7 @@ exports:3: no usable directories in export entry
 exports:3: using fallback (marked offline): /Volumes/Repo
 ```
 FIX: Remove residuals from `/etc/exports` file on the host machine, and do `vagrant reload` again.
+
 
 ## Support
 
