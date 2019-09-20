@@ -104,11 +104,11 @@ end
 vm_synced_folders = []
 all_synced_folders = ENV['SYNCED_FOLDERS'] ? ENV['SYNCED_FOLDERS'].split(',') : []
 all_synced_folders_map = {
-  '.':              ['/vagrant', disabled: true],
-  'configs':        ['/opt/stackstorm/configs', {}],
-  'packs_dev':      ['/opt/stackstorm/packs_dev', {}],
-  'packs':          ['/opt/stackstorm/packs', {}],
-  'datastore_load': ['/opt/stacsktorm/datastore_load', {}],
+  '.'=>              ['/vagrant', disabled: true],
+  'configs'=>        ['/opt/stackstorm/configs', {}],
+  'packs_dev'=>      ['/opt/stackstorm/packs_dev', {}],
+  'packs'=>          ['/opt/stackstorm/packs', {}],
+  'datastore_load'=> ['/opt/stacsktorm/datastore_load', {}],
 }
 all_synced_folders.each do |sf|
   vm_synced_folder = all_synced_folders_map.fetch(sf, nil)
