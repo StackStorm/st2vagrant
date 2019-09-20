@@ -171,7 +171,7 @@ Available common synced folders are:
 | Host folder        | Guest folder                     |
 | ------------------ | -------------------------------- |
 | `.`                | `/vagrant`                       |
-| `./configs`        | `/opt/stackstorm/configs`        |
+| `./config`         | `/opt/stackstorm/config`         |
 | `./packs`          | `/opt/stackstorm/packs`          |
 | `./packs_dev`      | `/opt/stackstorm/packs_dev`      |
 | `./datastore_load` | `/opt/stackstorm/datastore_load` |
@@ -225,7 +225,7 @@ probably a workaround -> if you know it open an issue and let us know.
 
 1. Synced folders you may wish to utilize to speed up setup of Vagrant box:
     
-    * `config`          --> synced to  `/opt/stackstorm/config`
+    * `config`          --> synced to `/opt/stackstorm/config`
     * `datastore_load`  --> synced to `/opt/stackstorm/datastore_load`
     * `packs_dev`       --> synced to `/opt/stackstorm/packs_dev`
 
