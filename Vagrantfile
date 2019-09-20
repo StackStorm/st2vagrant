@@ -90,21 +90,20 @@ end
 
 # A comma-separated list of common folders to sync
 # Available common folders:
-#   .                 /vagrant
 #   config            /opt/stackstorm/config
 #   packs_dev         /opt/stackstorm/packs_dev
 #   packs             /opt/stackstorm/packs
 #   datastore_load    /opt/stackstorm/datastore_load
 #
+# Note that . is always mounted to /vagrant
+#
 # Default: ''
 # Examples:
-# SYNCED_FOLDERS='.'
-# SYNCED_FOLDERS='.,config'
-# SYNCED_FOLDERS='.,config,packs_dev,packs,datastore_load'
+# SYNCED_FOLDERS='config'
+# SYNCED_FOLDERS='config,packs_dev,packs,datastore_load'
 vm_synced_folders = []
 all_synced_folders = ENV['SYNCED_FOLDERS'] ? ENV['SYNCED_FOLDERS'].split(',') : []
 all_synced_folders_map = {
-  '.'=>              ['/vagrant', disabled: true],
   'config'=>         ['/opt/stackstorm/config', {}],
   'packs_dev'=>      ['/opt/stackstorm/packs_dev', {}],
   'packs'=>          ['/opt/stackstorm/packs', {}],
