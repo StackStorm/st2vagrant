@@ -77,6 +77,7 @@ To evaluate StackStorm on supported OS flavors, consider using the boxes we use
 [for testing `st2`](https://github.com/StackStorm/st2-test-ground/blob/master/Vagrantfile)
 for best results:
 
+* ubuntu/bionic64 for Ubuntu 18.04 (default)
 * ubuntu/xenial64 for Ubuntu 16.04 (default)
 * ubuntu/trusty64 for Ubuntu 14.04
 * bento/centos-8  for CentOS 8
