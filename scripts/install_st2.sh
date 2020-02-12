@@ -65,7 +65,7 @@ if [[ -n "$RHTEST" ]]; then
     sudo ln -s /opt/rh/python27/root/usr/bin/python /usr/local/bin/python
     sudo ln -s /opt/rh/python27/root/usr/bin/pip /usr/local/bin/pip
     source /etc/environment
-  elif [[ "$RHMAJVER" == '7' ]]; then
+  elif [[ "$RHMAJVER" == '7' || "$RHMAJORVER" == '8' ]]; then
     sudo yum install -y epel-release
     sudo yum install -y python
   fi

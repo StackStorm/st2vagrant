@@ -79,6 +79,7 @@ for best results:
 
 * ubuntu/xenial64 for Ubuntu 16.04 (default)
 * ubuntu/trusty64 for Ubuntu 14.04
+* bento/centos-8  for CentOS 8
 * bento/centos-7.2 for CentOS 7.2
 * bento/centos-6.7 for CentOS 6.7
 
