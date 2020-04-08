@@ -84,8 +84,13 @@ elif [[ -n "$DEBTEST" ]]; then
 fi
 
 echo "*** Let's install some python tools ***"
-sudo -H pip install --upgrade pip
-sudo -H pip install virtualenv
+if [[ "$RHMAJVER" == '8' ]]; then
+  sudo -H pip3 install --upgrade pip
+  sudo -H pip3 install virtualenv
+else
+  sudo -H pip install --upgrade pip
+  sudo -H pip install virtualenv
+fi
 
 echo "*** Let's install StackStorm  ***"
 
