@@ -150,6 +150,16 @@ The options to `synced_folder` are the following for the VM provider:
 | VMWare               | `**{}` (no options)                           |
 | Virtualbox (default) | `**{nfs: true, mount_options: ["nfsvers=3"]}` |
 
+#### Using the libvirt provider (KVM)
+
+If you want to run the the VM with KVM/libvirt simply do:
+
+``` bash
+BOX=generic/ubuntu1804 vagrant up --provider libvirt
+BOX=centos/7 vagrant up --provider libvirt
+BOX=centos/8 vagrant up --provider libvirt
+```
+
 #### Common synced folders for Pack development
 
 Playing with StackStorm ranges from creating rules and workflows, to turning your scripts into

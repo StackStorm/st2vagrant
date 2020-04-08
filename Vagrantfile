@@ -3,8 +3,9 @@
 #
 # To force a specific provider set the VAGRANT_DEFAULT_PROVIDER environment variable.
 # Vagrant defaults to virtual box if you have it installed
-# eg: VAGRANT_DEFAULT_PROVIDER=vmware_deskop
+# eg: VAGRANT_DEFAULT_PROVIDER=libvirt
 # eg: VAGRANT_DEFAULT_PROVIDER=virtualbox
+# eg: VAGRANT_DEFAULT_PROVIDER=vmware_deskop
 
 # The OS to spin up
 # Default: ubuntu/xenial64
@@ -15,8 +16,20 @@
 # BOX=centos/6
 # BOX=centos/7
 # BOX=centos/8
+#
+# # VMWare
 # # Below box tested with vmware_fusion provider, vmware tools installed properly
 # BOX=bento/centos-7.6
+#
+# # Libvirt
+# # The ubuntu/ boxes aren't built for libvirt, so you'll need to use the generic/ or
+# # bento/ boxes.
+# # The normal centos/6, centos/7, centos/8 all work fine on libvirt.
+# BOX=generic/ubuntu1604
+# BOX=generic/ubuntu1804
+# BOX=centos/6
+# BOX=centos/7
+# BOX=centos/8
 vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/xenial64'
 
 # The hostname of the Vagrant VM
@@ -175,6 +188,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           vmware.whitelist_verified = true
         end
       end
+    end
+
+    # KVM / libvirt 
+    st2.vm.provider :libvirt do |lv, override|
+      lv.host = vm_hostname
+      lv.memory = 4096
+      lv.cpus = 2
+      lv.uri = "qemu:///system"
+      lv.storage_pool_name = "images"
+      # use a different network than the virtualbox provider so we can run virtualbox
+      # and libvirt on the same machine
+      override.vm.network :private_network, ip: "192.168.26.20"
     end
 
     vm_synced_folders.each do |host_folder, guest_folder, sf_options|
