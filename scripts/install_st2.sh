@@ -35,6 +35,7 @@ BRANCH_FLAG="--force-branch=$BRANCH"
 echo "*** Let's install some net tools ***"
 
 DEBTEST=$(lsb_release -a 2> /dev/null | grep Distributor | awk '{print $3}')
+DEBCODENAME=$(lsb_release -a 2> /dev/null | grep Codename | awk '{print $2}')
 RHTEST=''
 if [[ -e /etc/redhat-release ]]; then
   RHTEST=$(cat /etc/redhat-release 2> /dev/null | sed -e "s~\(.*\)release.*~\1~g")
@@ -76,7 +77,7 @@ if [[ -n "$RHTEST" ]]; then
     sudo yum install -y python3-pip git
   fi
 elif [[ -n "$DEBTEST" ]]; then
-  if [[ "$DEBTEST" == "xenial" ]]; then
+  if [[ "$DEBCODENAME" == "xenial" ]]; then
     sudo apt-get install -y python2.7 python-pip git
   else
     sudo apt-get install -y python3 python3-pip git
@@ -84,12 +85,12 @@ elif [[ -n "$DEBTEST" ]]; then
 fi
 
 echo "*** Let's install some python tools ***"
-if [[ "$RHMAJVER" == '8' ]]; then
-  sudo -H pip3 install --upgrade pip
-  sudo -H pip3 install virtualenv
-else
+if [[ "$RHMAJVER" == '6' || "$RHMAJVER" == '7' || "$DEBCODENAME" == 'xenial' ]]; then
   sudo -H pip install --upgrade pip
   sudo -H pip install virtualenv
+else
+  sudo -H pip3 install --upgrade pip
+  sudo -H pip3 install virtualenv
 fi
 
 echo "*** Let's install StackStorm  ***"
