@@ -4,7 +4,7 @@ set -e
 
 echo "$@"
 
-while getopts "u:p:r:t:d:b:k:" option; do
+while getopts "u:p:r:t:d:b:k:v:" option; do
   case "${option}" in
     u) ST2_USER=${OPTARG};;
     p) ST2_PASSWORD=${OPTARG};;
@@ -13,6 +13,7 @@ while getopts "u:p:r:t:d:b:k:" option; do
     d) DEV="--dev=${OPTARG}";;
     b) BRANCH=${OPTARG};;
     k) LICENSE_KEY=${OPTARG};;
+    v) VERSION=${OPTARG};;
   esac
 done
 
@@ -30,6 +31,10 @@ if [[ "$REPO_TYPE" == "staging" ]]; then
 fi
 
 BRANCH_FLAG="--force-branch=$BRANCH"
+
+if [[ -n "$VERSION" ]]; then
+  VERSION_FLAG="--version=${VERSION}"
+fi
 
 
 echo "*** Let's install some net tools ***"
@@ -96,9 +101,9 @@ fi
 echo "*** Let's install StackStorm  ***"
 
 if [[ -n "$LICENSE_KEY" ]]; then
-  echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG --license=$LICENSE_KEY"
-  curl -sSL https://raw.githubusercontent.com/StackStorm/bwc-installer/$BRANCH/scripts/bwc-installer.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE --license=$LICENSE_KEY
+  echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG --license=$LICENSE_KEY"
+  curl -sSL https://raw.githubusercontent.com/StackStorm/bwc-installer/$BRANCH/scripts/bwc-installer.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG --license=$LICENSE_KEY
 else
-  echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG"
-  curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE
+  echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG"
+  curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG
 fi

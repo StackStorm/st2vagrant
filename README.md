@@ -67,6 +67,7 @@ Environment variables can be used to enable or disable certain features of the S
 * `BOX` - the Vagrant base box to use. DEFAULT: `ubuntu/xenial64`
 * `ST2USER` - Username for st2. DEFAULT: st2admin
 * `ST2PASSWORD` - Password for st2. DEFAULT: `Ch@ngeMe`
+* `VERSION` - the version of StackStorm to install: `3.2`
 
 Set the variables by pre-pending them to `vagrant up` command. In the example below, it will install
 a version of st2 from development trunc, and set password to `secret`:
@@ -302,6 +303,14 @@ exports:3: using fallback (marked offline): /Volumes/Repo
 ```
 FIX: Remove residuals from `/etc/exports` file on the host machine, and do `vagrant reload` again.
 
+
+## Using st2vagrant for release testing
+
+Creates a box from a specific development version of code:
+
+``` bash
+BOX=centos/7 RELEASE=unstable VERSION=3.1dev vagrant up
+```
 
 ## Support
 
