@@ -67,6 +67,12 @@ release     = ENV['RELEASE'] ? '-r "' + ENV['RELEASE'] + '"' : '-r unstable'
 # REPO_TYPE=staging
 repo_type   = ENV['REPO_TYPE'] ? '-t ' + ENV['REPO_TYPE'] : ''
 
+# Which version of the package to install
+# Default: (empty string, meaning latest)
+# RELEASE=3.1dev
+# RELEASE=3.2
+version     = ENV['VERSION'] ? '-v "' + ENV['VERSION'] + '"' : ''
+
 # Build source - used to install packages from a specific CircleCI build
 # Default: Packagecloud
 # Examples:
@@ -216,7 +222,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Start shell provisioning.
     st2.vm.provision "shell" do |s|
       s.path = "scripts/install_st2.sh"
-      s.args   = "#{st2user} #{st2passwd} #{release} #{repo_type} #{dev} #{branch} #{license_key}"
+      s.args   = "#{st2user} #{st2passwd} #{release} #{repo_type} #{dev} #{branch} #{license_key} #{version}"
       s.privileged = false
     end
   end
