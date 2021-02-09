@@ -62,15 +62,16 @@ st2passwd   = ENV['ST2PASSWORD'] ? '-p "' + ENV['ST2PASSWORD'] + '"' : '-p "Ch@n
 # RELEASE=unstable
 release     = ENV['RELEASE'] ? '-r "' + ENV['RELEASE'] + '"' : '-r unstable'
 
-# Which release channel (staging or not to use)
-# Default: (empty string, eg: not staging)
+# Which release channel (staging or production to use)
+# Default: (empty string, eg: production)
 # REPO_TYPE=staging
 repo_type   = ENV['REPO_TYPE'] ? '-t ' + ENV['REPO_TYPE'] : ''
 
-# Which version of the package to install
+# Which version of the package to install - must be specified in x.y.z format
+# or X.Ydev
 # Default: (empty string, meaning latest)
 # RELEASE=3.1dev
-# RELEASE=3.2
+# RELEASE=3.2.0
 version     = ENV['VERSION'] ? '-v "' + ENV['VERSION'] + '"' : ''
 
 # Build source - used to install packages from a specific CircleCI build
