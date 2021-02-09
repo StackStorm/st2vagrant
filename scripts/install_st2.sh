@@ -91,10 +91,10 @@ fi
 
 echo "*** Let's install some python tools ***"
 if [[ "$RHMAJVER" == '6' || "$RHMAJVER" == '7' || "$DEBCODENAME" == 'xenial' ]]; then
-  sudo -H pip install --upgrade pip
+  sudo -H pip install --upgrade pip\<21
   sudo -H pip install virtualenv
 else
-  sudo -H pip3 install --upgrade pip
+  sudo -H pip3 install --upgrade pip\<21
   sudo -H pip3 install virtualenv
 fi
 
