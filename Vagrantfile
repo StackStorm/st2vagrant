@@ -87,7 +87,7 @@ dev         = ENV['DEV'] ? '-d ' + ENV['DEV'] : ''
 # Examples:
 # BRANCH=master
 # BRANCH=yum-exclude-nginx
-branch      = ENV['BRANCH'] ? '-b "' + ENV['BRANCH'] + '"' : '-b "master"'
+branch      = ENV['BRANCH'] ? '-b "' + ENV['BRANCH'] + '"' : ''
 
 # The Packagecloud.io key for enterprise packages
 # If unspecified, only community packages will be installed

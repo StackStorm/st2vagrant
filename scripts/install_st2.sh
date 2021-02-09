@@ -30,11 +30,21 @@ if [[ "$REPO_TYPE" == "staging" ]]; then
   REPO_TYPE="--staging"
 fi
 
-BRANCH_FLAG="--force-branch=$BRANCH"
-
 if [[ -n "$VERSION" ]]; then
   VERSION_FLAG="--version=${VERSION}"
+
+  # If BRANCH isn't specified
+  # But VERSION is a specified *released* version
+  if [[ -z "$BRANCH" && "$VERSION" =~ ^[[:digit:]]{1,}\.[[:digit:]]{1,}\.[[:digit:]]{1,} ]]; then
+    # Default the st2-packages branch to the version branch
+    BRANCH="v$(echo $VERSION | sed 's/^\([[:digit:]]*\.[[:digit:]]*\).*/\1/')"
+  fi
 fi
+
+# Default BRANCH to master
+BRANCH="${BRANCH:-master}"
+
+BRANCH_FLAG="--force-branch=$BRANCH"
 
 
 echo "*** Let's install some net tools ***"
