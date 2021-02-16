@@ -84,39 +84,16 @@ fi
 echo "*** Let's install some dev tools ***"
 
 if [[ -n "$RHTEST" ]]; then
-  if [[ "$RHMAJVER" == '6' ]]; then
-    sudo yum install -y centos-release-SCL
-    sudo yum install -y python27
-    echo "LD_LIBRARY_PATH=/opt/rh/python27/root/usr/lib64:$LD_LIBRARY_PATH" | sudo tee -a /etc/environment
-    sudo ln -s /opt/rh/python27/root/usr/bin/python /usr/local/bin/python
-    sudo ln -s /opt/rh/python27/root/usr/bin/pip /usr/local/bin/pip
-    source /etc/environment
-    sudo yum install -y python-pip git
-  elif [[ "$RHMAJVER" == '7' ]]; then
-    sudo yum install -y epel-release
-    sudo yum install -y python
-    sudo yum install -y python-pip git
-  else
-    sudo yum install -y epel-release
-    sudo yum install -y python3
-    sudo yum install -y python3-pip git
-  fi
+  sudo yum install -y epel-release
+  sudo yum install -y python3
+  sudo yum install -y python3-pip git
 elif [[ -n "$DEBTEST" ]]; then
-  if [[ "$DEBCODENAME" == "xenial" ]]; then
-    sudo apt-get install -y python2.7 python-pip git
-  else
-    sudo apt-get install -y python3 python3-pip git
-  fi
+  sudo apt-get install -y python3 python3-pip git
 fi
 
 echo "*** Let's install some python tools ***"
-if [[ "$RHMAJVER" == '6' || "$RHMAJVER" == '7' || "$DEBCODENAME" == 'xenial' ]]; then
-  sudo -H pip install --upgrade pip\<21
-  sudo -H pip install --upgrade virtualenv==16.6.0
-else
-  sudo -H pip3 install --upgrade pip\<21
-  sudo -H pip3 install --upgrade virtualenv==16.6.0
-fi
+sudo -H pip3 install --upgrade pip\<21
+sudo -H pip3 install --upgrade virtualenv==16.6.0
 
 echo "*** Let's install StackStorm  ***"
 
