@@ -83,8 +83,8 @@ vagrant destroy --force
 echo '---------------- Test: custom vm options -------------------'
 
 # Custom options for booting the box and setting up the st2 user
-BOX=ubuntu/trusty64 \
-HOSTNAME=st2vagrant-trusty \
+BOX=ubuntu/bionic64 \
+HOSTNAME=st2vagrant-bionic \
 VM_IP=192.168.16.40 \
 ST2USER=st2customuser \
 ST2PASSWORD=st2passwd \
@@ -94,8 +94,8 @@ sleep 10
 
 # Check the OS
 CUSTOM_VM_ETC_ISSUE_VALUE=$(\
-BOX=ubuntu/trusty64 \
-HOSTNAME=st2vagrant-trusty \
+BOX=ubuntu/bionic64 \
+HOSTNAME=st2vagrant-bionic \
 VM_IP=192.168.16.40 \
 ST2USER=st2customuser \
 ST2PASSWORD=st2passwd \
@@ -105,8 +105,8 @@ assert "'$CUSTOM_VM_ETC_ISSUE_VALUE' = Ubuntu 18.04*" $LINENO
 
 # Check the hostname
 CUSTOM_VM_HOSTNAME_VALUE=$(\
-BOX=ubuntu/trusty64 \
-HOSTNAME=st2vagrant-trusty \
+BOX=ubuntu/bionic64 \
+HOSTNAME=st2vagrant-bionic \
 VM_IP=192.168.16.40 \
 ST2USER=st2customuser \
 ST2PASSWORD=st2passwd \
@@ -116,8 +116,8 @@ echo $CUSTOM_VM_HOSTNAME_VALUE
 assert "'$CUSTOM_VM_HOSTNAME_VALUE' = st2vagrant-bionic" $LINENO
 
 # Check the IP
-BOX=ubuntu/trusty64 \
-HOSTNAME=st2vagrant-trusty \
+BOX=ubuntu/bionic64 \
+HOSTNAME=st2vagrant-bionic \
 VM_IP=192.168.16.40 \
 ST2USER=st2customuser \
 ST2PASSWORD=st2passwd \
@@ -126,8 +126,8 @@ assert "$? -eq 0" $LINENO
 
 # Check the username and password
 CUSTOM_VM_USER_VALUE=$(\
-BOX=ubuntu/trusty64 \
-HOSTNAME=st2vagrant-trusty \
+BOX=ubuntu/bionic64 \
+HOSTNAME=st2vagrant-bionic \
 VM_IP=192.168.16.40 \
 ST2USER=st2customuser \
 ST2PASSWORD=st2passwd \
@@ -135,8 +135,8 @@ vagrant ssh --command "st2 login st2customuser --password 'st2passwd'; st2 whoam
 assert "$? -eq 0" $LINENO
 assert "'$CUSTOM_VM_USER_VALUE' = st2customuser" $LINENO
 
-BOX=ubuntu/trusty64 \
-HOSTNAME=st2vagrant-trusty \
+BOX=ubuntu/bionic64 \
+HOSTNAME=st2vagrant-bionic \
 VM_IP=192.168.16.40 \
 ST2USER=st2customuser \
 ST2PASSWORD=st2passwd \
