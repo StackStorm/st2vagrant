@@ -39,6 +39,9 @@ echo '================ Testing  COMMUNITY VERSION ================'
 
 echo '---------------- Test: default options ---------------------'
 
+unset BOX BRANCH DEV HOSTNAME RELEASE REPO_TYPE ST2USER ST2PASSWORD VERSION VM_IP
+vagrant destroy
+
 # Default options
 vagrant up
 
