@@ -89,12 +89,6 @@ dev         = ENV['DEV'] ? '-d ' + ENV['DEV'] : ''
 # BRANCH=yum-exclude-nginx
 branch      = ENV['BRANCH'] ? '-b "' + ENV['BRANCH'] + '"' : ''
 
-# The Packagecloud.io key for enterprise packages
-# If unspecified, only community packages will be installed
-# Example:
-# LICENSE_KEY=0123456789abcdef0123456789abcdef0123456789abcdef
-license_key = ENV['LICENSE_KEY'] ? '-k ' + ENV['LICENSE_KEY'] : ''
-
 # A comma-separated list of synced folder options, specified as key/value pairs
 # Option values are interpreted as Ruby code
 # Default: (empty)
@@ -223,7 +217,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Start shell provisioning.
     st2.vm.provision "shell" do |s|
       s.path = "scripts/install_st2.sh"
-      s.args   = "#{st2user} #{st2passwd} #{release} #{repo_type} #{dev} #{branch} #{license_key} #{version}"
+      s.args   = "#{st2user} #{st2passwd} #{release} #{repo_type} #{dev} #{branch} #{version}"
       s.privileged = false
     end
   end

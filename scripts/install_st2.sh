@@ -12,7 +12,6 @@ while getopts "u:p:r:t:d:b:k:v:" option; do
     t) REPO_TYPE=${OPTARG};;
     d) DEV="--dev=${OPTARG}";;
     b) BRANCH=${OPTARG};;
-    k) LICENSE_KEY=${OPTARG};;
     v) VERSION=${OPTARG};;
   esac
 done
@@ -110,10 +109,5 @@ fi
 
 echo "*** Let's install StackStorm  ***"
 
-if [[ -n "$LICENSE_KEY" ]]; then
-  echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG --license=$LICENSE_KEY"
-  curl -sSL https://raw.githubusercontent.com/StackStorm/bwc-installer/$BRANCH/scripts/bwc-installer.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG --license=$LICENSE_KEY
-else
-  echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG"
-  curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG
-fi
+echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG
+curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG
