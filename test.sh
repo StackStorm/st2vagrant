@@ -18,7 +18,7 @@ assert ()                 #  If condition false,
 
   lineno=$2
 
-  if [ ! $1 ]
+  if [[ ! $1 ]]
   then
     echo "Assertion failed:"
     echo "\"$1\""
@@ -50,12 +50,12 @@ sleep 10
 # Check the OS
 DEFAULT_ETC_ISSUE_VALUE=$(vagrant ssh --command "printf \"\$(sed 's| \\\\l||' /etc/issue)\"" | tr -d '\r')
 assert "$? -eq 0" $LINENO
-assert "$DEFAULT_ETC_ISSUE_VALUE = Ubuntu 16.04*" $LINENO
+assert "'$DEFAULT_ETC_ISSUE_VALUE' == Ubuntu 16.04*" $LINENO
 
 # Check the hostname
 DEFAULT_HOSTNAME_VALUE=$(vagrant ssh --command "hostname" | tr -d '\r\n')
 assert "$? -eq 0" $LINENO
-assert "$DEFAULT_HOSTNAME_VALUE = st2vagrant" $LINENO
+assert "'$DEFAULT_HOSTNAME_VALUE' = st2vagrant" $LINENO
 
 # Check the IP
 vagrant ssh --command "ifconfig | grep -q 'inet addr:192.168.16.20  Bcast:192.168.16.255  Mask:255.255.255.0'"
@@ -67,7 +67,7 @@ assert "$? -eq 0" $LINENO
 
 DEFAULT_USER_VALUE=$(vagrant ssh --command "st2 whoami | grep -q 'Currently logged in as \"st2admin\"'")
 assert "$? -eq 0" $LINENO
-assert "$DEFAULT_USER_VALUE = st2admin" $LINENO
+assert "'$DEFAULT_USER_VALUE' == st2admin" $LINENO
 
 # Check the Packagecloud community repository
 vagrant ssh --command 'grep -qE "^deb https://packagecloud.io/StackStorm/unstable/ubuntu/ xenial main$" /etc/apt/sources.list.d/StackStorm*stable.list'
@@ -101,7 +101,7 @@ ST2USER=st2customuser \
 ST2PASSWORD=st2passwd \
 vagrant ssh --command "printf \"\$(sed 's| \\\\l||' /etc/issue)\"" | tr -d '\r')
 assert "$? -eq 0" $LINENO
-assert "$CUSTOM_VM_ETC_ISSUE_VALUE = Ubuntu 14.04*" $LINENO
+assert "'$CUSTOM_VM_ETC_ISSUE_VALUE' = Ubuntu 18.04*" $LINENO
 
 # Check the hostname
 CUSTOM_VM_HOSTNAME_VALUE=$(\
@@ -113,7 +113,7 @@ ST2PASSWORD=st2passwd \
 vagrant ssh --command "hostname" | tr -d '\r\n')
 assert "$? -eq 0" $LINENO
 echo $CUSTOM_VM_HOSTNAME_VALUE
-assert "$CUSTOM_VM_HOSTNAME_VALUE = st2vagrant-trusty" $LINENO
+assert "'$CUSTOM_VM_HOSTNAME_VALUE' = st2vagrant-bionic" $LINENO
 
 # Check the IP
 BOX=ubuntu/trusty64 \
@@ -133,7 +133,7 @@ ST2USER=st2customuser \
 ST2PASSWORD=st2passwd \
 vagrant ssh --command "st2 login st2customuser --password 'st2passwd'; st2 whoami | grep -q 'Currently logged in as \"st2customuser\".'")
 assert "$? -eq 0" $LINENO
-assert "$CUSTOM_VM_USER_VALUE = st2customuser" $LINENO
+assert "'$CUSTOM_VM_USER_VALUE' = st2customuser" $LINENO
 
 BOX=ubuntu/trusty64 \
 HOSTNAME=st2vagrant-trusty \
