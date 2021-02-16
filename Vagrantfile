@@ -70,8 +70,8 @@ repo_type   = ENV['REPO_TYPE'] ? '-t ' + ENV['REPO_TYPE'] : ''
 # Which version of the package to install - must be specified in x.y.z format
 # or X.Ydev
 # Default: (empty string, meaning latest)
-# RELEASE=3.1dev
-# RELEASE=3.2.0
+# VERSION=3.1dev
+# VERSION=3.2.0
 version     = ENV['VERSION'] ? '-v "' + ENV['VERSION'] + '"' : ''
 
 # Build source - used to install packages from a specific CircleCI build
