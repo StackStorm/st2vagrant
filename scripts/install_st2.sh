@@ -48,9 +48,20 @@ BRANCH_FLAG="--force-branch=$BRANCH"
 
 echo "*** Let's install some net tools ***"
 
-DEBTEST=$(lsb_release -a 2> /dev/null | grep Distributor | awk '{print $3}')
-DEBCODENAME=$(lsb_release -a 2> /dev/null | grep Codename | awk '{print $2}')
+DEBTEST=$(lsb_release -a 2> /dev/null | grep Distributor | awk '{print $3}')  # Ubuntu
+DEBCODENAME=$(lsb_release -a 2> /dev/null | grep Codename | awk '{print $2}')  # xenial|bionic
 RHTEST=''
+
+echo $DEBTEST
+echo $DEBCODENAME
+# For ST2 v3.4 on Ubuntu Xenial
+if [[ "$DEBTEST" == "Ubuntu" && "$DEBCODENAME" == "xenial" ]]; then
+  if [[ -z "$VERSION" || "$VERSION" == 3.4* ]]; then
+    # Add a flag to automatically install and use the Python 3 repository from the deadsnakes PPA
+    XENIAL_ST2_3_4_PYTHON3_FLAG="--u16-add-insecure-py3-ppa"
+  fi
+fi
+
 if [[ -e /etc/redhat-release ]]; then
   RHTEST=$(cat /etc/redhat-release 2> /dev/null | sed -e "s~\(.*\)release.*~\1~g")
   RHMAJVER=$(cat /etc/redhat-release | sed 's/[^0-9.]*\([0-9.]\).*/\1/')
@@ -109,5 +120,5 @@ fi
 
 echo "*** Let's install StackStorm  ***"
 
-echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG
-curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG
+echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG $XENIAL_ST2_3_4_PYTHON3_FLAG"
+curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG $XENIAL_ST2_3_4_PYTHON3_FLAG
