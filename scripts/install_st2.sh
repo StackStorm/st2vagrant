@@ -90,6 +90,7 @@ if [[ -n "$RHTEST" ]]; then
 elif [[ -n "$DEBTEST" ]]; then
   sudo apt-get install -y python3 python3-pip git
 fi
+python3 --version
 
 echo "*** Let's install some python tools ***"
 sudo -H pip3 install --upgrade pip\<21
