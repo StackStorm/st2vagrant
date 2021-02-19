@@ -4,7 +4,7 @@ set -e
 
 echo "$@"
 
-while getopts "u:p:r:t:d:b:k:v:" option; do
+while getopts "u:p:r:t:d:b:v:" option; do
   case "${option}" in
     u) ST2_USER=${OPTARG};;
     p) ST2_PASSWORD=${OPTARG};;
@@ -12,7 +12,6 @@ while getopts "u:p:r:t:d:b:k:v:" option; do
     t) REPO_TYPE=${OPTARG};;
     d) DEV="--dev=${OPTARG}";;
     b) BRANCH=${OPTARG};;
-    k) LICENSE_KEY=${OPTARG};;
     v) VERSION=${OPTARG};;
   esac
 done
@@ -30,18 +29,39 @@ if [[ "$REPO_TYPE" == "staging" ]]; then
   REPO_TYPE="--staging"
 fi
 
-BRANCH_FLAG="--force-branch=$BRANCH"
-
 if [[ -n "$VERSION" ]]; then
   VERSION_FLAG="--version=${VERSION}"
+
+  # If BRANCH isn't specified
+  # But VERSION is a specified *released* version
+  if [[ -z "$BRANCH" && "$VERSION" =~ ^[[:digit:]]{1,}\.[[:digit:]]{1,}\.[[:digit:]]{1,} ]]; then
+    # Default the st2-packages branch to the version branch
+    BRANCH="v$(echo $VERSION | sed 's/^\([[:digit:]]*\.[[:digit:]]*\).*/\1/')"
+  fi
 fi
+
+# Default BRANCH to master
+BRANCH="${BRANCH:-master}"
+
+BRANCH_FLAG="--force-branch=$BRANCH"
 
 
 echo "*** Let's install some net tools ***"
 
-DEBTEST=$(lsb_release -a 2> /dev/null | grep Distributor | awk '{print $3}')
-DEBCODENAME=$(lsb_release -a 2> /dev/null | grep Codename | awk '{print $2}')
+DEBTEST=$(lsb_release -a 2> /dev/null | grep Distributor | awk '{print $3}')  # Ubuntu
+DEBCODENAME=$(lsb_release -a 2> /dev/null | grep Codename | awk '{print $2}')  # xenial|bionic
 RHTEST=''
+
+echo $DEBTEST
+echo $DEBCODENAME
+# For ST2 v3.4 on Ubuntu Xenial
+if [[ "$DEBTEST" == "Ubuntu" && "$DEBCODENAME" == "xenial" ]]; then
+  if [[ -z "$VERSION" || "$VERSION" == 3.4* ]]; then
+    # Add a flag to automatically install and use the Python 3 repository from the deadsnakes PPA
+    XENIAL_ST2_3_4_PYTHON3_FLAG="--u16-add-insecure-py3-ppa"
+  fi
+fi
+
 if [[ -e /etc/redhat-release ]]; then
   RHTEST=$(cat /etc/redhat-release 2> /dev/null | sed -e "s~\(.*\)release.*~\1~g")
   RHMAJVER=$(cat /etc/redhat-release | sed 's/[^0-9.]*\([0-9.]\).*/\1/')
@@ -64,46 +84,19 @@ fi
 echo "*** Let's install some dev tools ***"
 
 if [[ -n "$RHTEST" ]]; then
-  if [[ "$RHMAJVER" == '6' ]]; then
-    sudo yum install -y centos-release-SCL
-    sudo yum install -y python27
-    echo "LD_LIBRARY_PATH=/opt/rh/python27/root/usr/lib64:$LD_LIBRARY_PATH" | sudo tee -a /etc/environment
-    sudo ln -s /opt/rh/python27/root/usr/bin/python /usr/local/bin/python
-    sudo ln -s /opt/rh/python27/root/usr/bin/pip /usr/local/bin/pip
-    source /etc/environment
-    sudo yum install -y python-pip git
-  elif [[ "$RHMAJVER" == '7' ]]; then
-    sudo yum install -y epel-release
-    sudo yum install -y python
-    sudo yum install -y python-pip git
-  else
-    sudo yum install -y epel-release
-    sudo yum install -y python3
-    sudo yum install -y python3-pip git
-  fi
+  sudo yum install -y epel-release
+  sudo yum install -y python3
+  sudo yum install -y python3-pip git
 elif [[ -n "$DEBTEST" ]]; then
-  if [[ "$DEBCODENAME" == "xenial" ]]; then
-    sudo apt-get install -y python2.7 python-pip git
-  else
-    sudo apt-get install -y python3 python3-pip git
-  fi
+  sudo apt-get install -y python3 python3-pip git
 fi
+python3 --version
 
 echo "*** Let's install some python tools ***"
-if [[ "$RHMAJVER" == '6' || "$RHMAJVER" == '7' || "$DEBCODENAME" == 'xenial' ]]; then
-  sudo -H pip install --upgrade pip
-  sudo -H pip install virtualenv
-else
-  sudo -H pip3 install --upgrade pip
-  sudo -H pip3 install virtualenv
-fi
+sudo -H pip3 install --upgrade pip\<21
+sudo -H pip3 install --upgrade virtualenv==16.6.0
 
 echo "*** Let's install StackStorm  ***"
 
-if [[ -n "$LICENSE_KEY" ]]; then
-  echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG --license=$LICENSE_KEY"
-  curl -sSL https://raw.githubusercontent.com/StackStorm/bwc-installer/$BRANCH/scripts/bwc-installer.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG --license=$LICENSE_KEY
-else
-  echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG"
-  curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG
-fi
+echo "--user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $VERSION_FLAG $XENIAL_ST2_3_4_PYTHON3_FLAG"
+curl -sSL https://raw.githubusercontent.com/StackStorm/st2-packages/$BRANCH/scripts/st2_bootstrap.sh | bash -s -- --user=$ST2_USER --password=$ST2_PASSWORD $DEV $BRANCH_FLAG $RELEASE_FLAG $REPO_TYPE $VERSION_FLAG $XENIAL_ST2_3_4_PYTHON3_FLAG
