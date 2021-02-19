@@ -4,7 +4,7 @@ set -e
 
 echo "$@"
 
-while getopts "u:p:r:t:d:b:k:v:" option; do
+while getopts "u:p:r:t:d:b:v:" option; do
   case "${option}" in
     u) ST2_USER=${OPTARG};;
     p) ST2_PASSWORD=${OPTARG};;
