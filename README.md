@@ -64,7 +64,7 @@ Environment variables can be used to enable or disable certain features of the S
 
 * `RELEASE` - `stable` for the latest stable release, or `unstable` for a current version from dev trunk. DEFAULT: `stable`
 * `HOSTNAME` - the hostname to give the VM. DEFAULT: `st2vagrant`
-* `BOX` - the Vagrant base box to use. DEFAULT: `ubuntu/xenial64`
+* `BOX` - the Vagrant base box to use. DEFAULT: `ubuntu/bionic64`
 * `ST2USER` - Username for st2. DEFAULT: st2admin
 * `ST2PASSWORD` - Password for st2. DEFAULT: `Ch@ngeMe`
 * `VERSION` - the version of StackStorm to install: `3.2`
@@ -78,8 +78,9 @@ To evaluate StackStorm on supported OS flavors, consider using the boxes we use
 [for testing `st2`](https://github.com/StackStorm/st2-test-ground/blob/master/Vagrantfile)
 for best results:
 
+* ubuntu/focal64 for Ubuntu 20.04
 * ubuntu/bionic64 for Ubuntu 18.04 (default)
-* ubuntu/xenial64 for Ubuntu 16.04 (default)
+* ubuntu/xenial64 for Ubuntu 16.04
 * ubuntu/trusty64 for Ubuntu 14.04
 * bento/centos-8  for CentOS 8
 * bento/centos-7.2 for CentOS 7.2
@@ -99,8 +100,9 @@ Or use your favorite vagrant box. **Note that StackStorm installs from native Li
 are built for following OSes only. Make make sure the OS flavor of your box is one of the
 following:**
 
-* Ubuntu 18.04 (Xenial Xerus)
-* **Ubuntu 16.04 (Xenial Xerus)** (default)
+* Ubuntu 20.04 (Focal Fossa)
+* **Ubuntu 18.04 (Bionic Beaver)** (default)
+* Ubuntu 16.04 (Xenial Xerus)
 * Ubuntu 14.04 (Trusty Tahr)
 
 * CentOS 7.2 / RHEL 7.2

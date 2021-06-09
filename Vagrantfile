@@ -8,11 +8,12 @@
 # eg: VAGRANT_DEFAULT_PROVIDER=vmware_deskop
 
 # The OS to spin up
-# Default: ubuntu/xenial64
+# Default: ubuntu/bionic64
 # Examples:
 # BOX=ubuntu/trusty64
 # BOX=ubuntu/xenial64
 # BOX=ubuntu/bionic64
+# BOX=ubuntu/focal64
 # BOX=centos/6
 # BOX=centos/7
 # BOX=centos/8
@@ -30,7 +31,7 @@
 # BOX=centos/6
 # BOX=centos/7
 # BOX=centos/8
-vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/xenial64'
+vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/bionic64'
 
 # The hostname of the Vagrant VM
 # Default: st2vagrant
