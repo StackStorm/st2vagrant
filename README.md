@@ -31,7 +31,7 @@ vagrant up
 ```
 
 This command will download a vagrant box, create a virtual machine, and start a script to provision
-the most recent stable version of StackStorm. You will see a lot of text, some of that may be red,
+the most recent unstable version of StackStorm. You will see a lot of text, some of that may be red,
 but not to worry, it's normal. After a while, you should see a large `ST2 OK`, which means that
 installation successful and a VM with StackStorm is ready to play. Log in to VM, and fire some st2
 commands:
@@ -62,7 +62,7 @@ If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm
 
 Environment variables can be used to enable or disable certain features of the StackStorm installation:
 
-* `RELEASE` - `stable` for the latest stable release, or `unstable` for a current version from dev trunk. DEFAULT: `stable`
+* `RELEASE` - `stable` for the latest stable release, or `unstable` for a current version from dev trunk. DEFAULT: `unstable`
 * `HOSTNAME` - the hostname to give the VM. DEFAULT: `st2vagrant`
 * `BOX` - the Vagrant base box to use. DEFAULT: `ubuntu/bionic64`
 * `ST2USER` - Username for st2. DEFAULT: st2admin
