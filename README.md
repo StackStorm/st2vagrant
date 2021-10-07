@@ -63,7 +63,7 @@ If something went wrong, jump to [Troubleshooting](https://github.com/StackStorm
 Environment variables can be used to enable or disable certain features of the StackStorm installation:
 
 * `RELEASE` - `stable` for the latest stable release, or `unstable` for a current version from dev trunk. DEFAULT: `unstable`
-* `HOSTNAME` - the hostname to give the VM. DEFAULT: `st2vagrant`
+* `VAGRANT_HOSTNAME` - the hostname to give the VM. DEFAULT: `st2vagrant`
 * `BOX` - the Vagrant base box to use. DEFAULT: `ubuntu/bionic64`
 * `ST2USER` - Username for st2. DEFAULT: st2admin
 * `ST2PASSWORD` - Password for st2. DEFAULT: `Ch@ngeMe`

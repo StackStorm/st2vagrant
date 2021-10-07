@@ -36,9 +36,13 @@ vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/bionic64'
 # The hostname of the Vagrant VM
 # Default: st2vagrant
 # Examples:
-# HOSTNAME=st2vagrant-rhel7
-# HOSTNAME=rhel7-testing
-vm_hostname    = ENV['HOSTNAME'] ? ENV['HOSTNAME'] : 'st2vagrant'
+# VAGRANT_HOSTNAME=st2vagrant-rhel7
+# VAGRANT_HOSTNAME=rhel7-testing
+#
+# Note, we specifically do NOT name this "HOSTNAME" because that is a
+# common environment variable and will set the vagrant VM's hostname to the
+# same as the hypervisor host running the vagrant VM.
+vm_hostname = ENV['VAGRANT_HOSTNAME'] ? ENV['VAGRANT_HOSTNAME'] : 'st2vagrant'
 
 # The IP address to assign to the VM
 # Default: 192.168.16.20
