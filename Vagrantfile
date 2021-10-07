@@ -8,11 +8,12 @@
 # eg: VAGRANT_DEFAULT_PROVIDER=vmware_deskop
 
 # The OS to spin up
-# Default: ubuntu/xenial64
+# Default: ubuntu/bionic64
 # Examples:
 # BOX=ubuntu/trusty64
 # BOX=ubuntu/xenial64
 # BOX=ubuntu/bionic64
+# BOX=ubuntu/focal64
 # BOX=centos/6
 # BOX=centos/7
 # BOX=centos/8
@@ -30,7 +31,7 @@
 # BOX=centos/6
 # BOX=centos/7
 # BOX=centos/8
-vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/xenial64'
+vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/bionic64'
 
 # The hostname of the Vagrant VM
 # Default: st2vagrant
@@ -66,15 +67,16 @@ st2passwd   = ENV['ST2PASSWORD'] ? '-p "' + ENV['ST2PASSWORD'] + '"' : '-p "Ch@n
 # RELEASE=unstable
 release     = ENV['RELEASE'] ? '-r "' + ENV['RELEASE'] + '"' : '-r unstable'
 
-# Which release channel (staging or not to use)
-# Default: (empty string, eg: not staging)
+# Which release channel (staging or production to use)
+# Default: (empty string, eg: production)
 # REPO_TYPE=staging
 repo_type   = ENV['REPO_TYPE'] ? '-t ' + ENV['REPO_TYPE'] : ''
 
-# Which version of the package to install
+# Which version of the package to install - must be specified in x.y.z format
+# or X.Ydev
 # Default: (empty string, meaning latest)
-# RELEASE=3.1dev
-# RELEASE=3.2
+# VERSION=3.1dev
+# VERSION=3.2.0
 version     = ENV['VERSION'] ? '-v "' + ENV['VERSION'] + '"' : ''
 
 # Build source - used to install packages from a specific CircleCI build
@@ -90,13 +92,7 @@ dev         = ENV['DEV'] ? '-d ' + ENV['DEV'] : ''
 # Examples:
 # BRANCH=master
 # BRANCH=yum-exclude-nginx
-branch      = ENV['BRANCH'] ? '-b "' + ENV['BRANCH'] + '"' : '-b "master"'
-
-# The Packagecloud.io key for enterprise packages
-# If unspecified, only community packages will be installed
-# Example:
-# LICENSE_KEY=0123456789abcdef0123456789abcdef0123456789abcdef
-license_key = ENV['LICENSE_KEY'] ? '-k ' + ENV['LICENSE_KEY'] : ''
+branch      = ENV['BRANCH'] ? '-b "' + ENV['BRANCH'] + '"' : ''
 
 # A comma-separated list of synced folder options, specified as key/value pairs
 # Option values are interpreted as Ruby code
@@ -226,7 +222,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Start shell provisioning.
     st2.vm.provision "shell" do |s|
       s.path = "scripts/install_st2.sh"
-      s.args   = "#{st2user} #{st2passwd} #{release} #{repo_type} #{dev} #{branch} #{license_key} #{version}"
+      s.args   = "#{st2user} #{st2passwd} #{release} #{repo_type} #{dev} #{branch} #{version}"
       s.privileged = false
     end
   end
