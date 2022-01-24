@@ -21,8 +21,6 @@ here](https://www.virtualbox.org/manual/ch01.html#intro-installing)).
 
 * Note. Problems have been found using VirtualBox 5.1 with RockyLinux 8, which were resolved
 using version 6.1. 
-If using VirtualBox 6.1.28 or above, the default allowed range is 192.168.56.0/21.
-Therefore, you may want to set VM_IP or alter the default range as the default IP used is 192.168.16.20.
 
 
 ## Simple installation
@@ -47,7 +45,7 @@ st2 --version
 st2 action list
 ```
 
-The WebUI is available at https://192.168.16.20. The default st2admin user credentials are in
+The WebUI is available at https://192.168.56.20. The default st2admin user credentials are in
 [Vagrantfile](Vagrantfile), usually `st2admin:Ch@ngeMe`.
 
 You are in business! Go to [QuickStart](https://docs.stackstorm.com/start.html) and follow along.
@@ -288,7 +286,7 @@ In the event you receive an error related to IP conflict, Edit the `private_newo
 
 ```
     # Configure a private network
-    st2.vm.network :private_network, ip: "192.168.16.20"
+    st2.vm.network :private_network, ip: "192.168.56.20"
 ```
 
 

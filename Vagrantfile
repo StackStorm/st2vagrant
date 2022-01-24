@@ -45,10 +45,10 @@ vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/bionic64'
 vm_hostname = ENV['VAGRANT_HOSTNAME'] ? ENV['VAGRANT_HOSTNAME'] : 'st2vagrant'
 
 # The IP address to assign to the VM
-# Default: 192.168.16.20
+# Default: 192.168.56.20
 # Examples:
 # VM_IP=192.168.1.4
-vm_ip       = ENV['VM_IP'] ? ENV['VM_IP'] : '192.168.16.20'
+vm_ip       = ENV['VM_IP'] ? ENV['VM_IP'] : '192.168.56.20'
 
 # The ST2 user
 # Default: st2admin
