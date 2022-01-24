@@ -16,7 +16,7 @@
 # BOX=ubuntu/focal64
 # BOX=centos/6
 # BOX=centos/7
-# BOX=centos/8
+# BOX=rockylinux/8
 #
 # # VMWare
 # # Below box tested with vmware_fusion provider, vmware tools installed properly
@@ -25,12 +25,12 @@
 # # Libvirt
 # # The ubuntu/ boxes aren't built for libvirt, so you'll need to use the generic/ or
 # # bento/ boxes.
-# # The normal centos/6, centos/7, centos/8 all work fine on libvirt.
+# # The normal centos/6, centos/7, rockylinux/8 all work fine on libvirt.
 # BOX=generic/ubuntu1604
 # BOX=generic/ubuntu1804
 # BOX=centos/6
 # BOX=centos/7
-# BOX=centos/8
+# BOX=rockylinux/8
 vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/bionic64'
 
 # The hostname of the Vagrant VM
@@ -45,10 +45,10 @@ vm_box         = ENV['BOX'] ? ENV['BOX'] : 'ubuntu/bionic64'
 vm_hostname = ENV['VAGRANT_HOSTNAME'] ? ENV['VAGRANT_HOSTNAME'] : 'st2vagrant'
 
 # The IP address to assign to the VM
-# Default: 192.168.16.20
+# Default: 192.168.56.20
 # Examples:
 # VM_IP=192.168.1.4
-vm_ip       = ENV['VM_IP'] ? ENV['VM_IP'] : '192.168.16.20'
+vm_ip       = ENV['VM_IP'] ? ENV['VM_IP'] : '192.168.56.20'
 
 # The ST2 user
 # Default: st2admin

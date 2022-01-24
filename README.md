@@ -19,6 +19,9 @@ below.
 VirtualBox Extension packs ([follow instructions for Extension packs
 here](https://www.virtualbox.org/manual/ch01.html#intro-installing)).
 
+* Note. Problems have been found using VirtualBox 5.1 with RockyLinux 8, which were resolved
+using version 6.1. 
+
 
 ## Simple installation
 
@@ -42,7 +45,7 @@ st2 --version
 st2 action list
 ```
 
-The WebUI is available at https://192.168.16.20. The default st2admin user credentials are in
+The WebUI is available at https://192.168.56.20. The default st2admin user credentials are in
 [Vagrantfile](Vagrantfile), usually `st2admin:Ch@ngeMe`.
 
 You are in business! Go to [QuickStart](https://docs.stackstorm.com/start.html) and follow along.
@@ -82,18 +85,18 @@ for best results:
 * ubuntu/bionic64 for Ubuntu 18.04 (default)
 * ubuntu/xenial64 for Ubuntu 16.04
 * ubuntu/trusty64 for Ubuntu 14.04
-* bento/centos-8  for CentOS 8
-* bento/centos-7.2 for CentOS 7.2
 * bento/centos-6.7 for CentOS 6.7
+* centos/7 for CentOS 7
+* rockylinux/8 for RockyLinux 8
 
 Examples:
 
 ```bash
-BOX="bento/centos-7.2" vagrant up
+BOX="centos/7" vagrant up
 ```
 
 ```bash
-BOX=bento/centos-7.6 RELEASE=stable vagrant up
+BOX=centos/7 RELEASE=stable vagrant up
 ```
 
 Or use your favorite vagrant box. **Note that StackStorm installs from native Linux packages, which
@@ -105,8 +108,8 @@ following:**
 * Ubuntu 16.04 (Xenial Xerus)
 * Ubuntu 14.04 (Trusty Tahr)
 
-* CentOS 7.2 / RHEL 7.2
-* CentOS 6.7 / RHEL 6.7
+* CentOS 7 / RHEL 7
+* RockyLinux 8 / RHEL 8 
 
 ### Synced folders
 
@@ -160,7 +163,7 @@ If you want to run the the VM with KVM/libvirt simply do:
 ``` bash
 BOX=generic/ubuntu1804 vagrant up --provider libvirt
 BOX=centos/7 vagrant up --provider libvirt
-BOX=centos/8 vagrant up --provider libvirt
+BOX=rockylinux/8 vagrant up --provider libvirt
 ```
 
 #### Common synced folders for Pack development
@@ -283,7 +286,7 @@ In the event you receive an error related to IP conflict, Edit the `private_newo
 
 ```
     # Configure a private network
-    st2.vm.network :private_network, ip: "192.168.16.20"
+    st2.vm.network :private_network, ip: "192.168.56.20"
 ```
 
 
